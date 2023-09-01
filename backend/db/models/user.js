@@ -3,6 +3,7 @@ const {
   Model,
   Validator
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -22,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [4, 30],
         isNotEmail(username) {
-          if (this.isEmail(username)) {
+          if (Validator.isEmail(username)) {
             throw new Error('Username cannot be email address!');
           }
         }
