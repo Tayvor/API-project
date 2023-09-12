@@ -26,10 +26,12 @@ router.post(
       name: spot.name,
       description: spot.description,
       price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
     };
 
-    return res.json({
-      spot: safeSpot
+    return res.status(201).json({
+      ...safeSpot
     });
   }
 );
