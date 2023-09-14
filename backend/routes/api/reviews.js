@@ -46,11 +46,8 @@ router.get(
       lastName: userDetails.lastName
     };
 
-
-
     const Reviews = [];
 
-    // aliasing???
     for (const review of currUserReviews) {
       const spotDetails = await Spot.findByPk(review.spotId);
 
@@ -93,7 +90,60 @@ router.get(
       Reviews
     })
   }
-)
+);
+
+// Get all Reviews by a Spot's id
+router.get(
+  '/:spotId/reviews',
+  async (req, res) => {
+    const theSpot = await Spot.findByPk(req.params.spotId);
+
+    if (!theSpot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found"
+      })
+    }
+    const spotReviews = await Review.findAll({
+      where: {
+        spotId: req.params.spotId
+      }
+    });
+
+    const reviewData = [];
+
+    for (const review of spotReviews) {
+      const reviewAuthor = await User.findByPk(review.userId);
+      const userDetails = {
+        id: reviewAuthor.id,
+        firstName: reviewAuthor.firstName,
+        lastName: reviewAuthor.lastName
+      }
+
+      const formattedReview = {
+        id: review.id,
+        userId: review.userId,
+        spotId: review.spotId,
+        review: review.content,
+        stars: review.starRating,
+        createdAt: review.createdAt,
+        updatedAt: review.updatedAt,
+        User: { ...userDetails },
+        ReviewImages: [
+          {
+            id: 'fix me',
+            url: 'fix me'
+          }
+        ]
+      }
+
+      reviewData.push(formattedReview)
+    }
+
+    return res.json({
+      Reviews: reviewData
+    })
+  }
+);
 
 // Create a Review for a Spot based on the Spot's id
 router.post(
@@ -148,6 +198,68 @@ router.post(
     };
   }
 );
+
+// Add an Image to a Review based on the Review's id
+
+// Edit a Review
+router.put(
+  '/:reviewId',
+  validateReview,
+  async (req, res) => {
+    const theReview = await Review.findByPk(req.params.reviewId);
+
+    if (!theReview) {
+      return res.status(404).json({
+        message: "Review couldn't be found"
+      })
+    };
+
+    const { review, stars } = req.body;
+
+    theReview.set({
+      content: review,
+      starRating: stars
+    });
+
+    await theReview.save();
+
+    const updatedReview = {
+      id: theReview.id,
+      userId: theReview.userId,
+      spotId: theReview.spotId,
+      review: theReview.content,
+      stars: theReview.starRating,
+      createdAt: theReview.createdAt,
+      updatedAt: theReview.updatedAt
+    };
+
+    return res.json(updatedReview);
+  }
+);
+
+// Delete a Review
+router.delete(
+  '/:reviewId',
+  async (req, res) => {
+    const theReview = await Review.findByPk(req.params.reviewId);
+    const currUserId = req.user.id;
+
+    if (!theReview) {
+      return res.status(404).json({
+        message: "Review couldn't be found"
+      })
+    };
+
+    if (theReview.userId === currUserId) {
+      await theReview.destroy();
+
+      return res.json({
+        message: 'Successfully deleted'
+      })
+    }
+  }
+);
+
 
 
 
