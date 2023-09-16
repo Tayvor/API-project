@@ -87,9 +87,17 @@ router.post(
 router.get(
   '',
   async (req, res) => {
-    let { page, size } = req.query;
+    let { page, size, maxLat, minLat, maxLng, minLng, minPrice, maxPrice } = req.query;
     let invalid = false;
+    const filters = {
+      offset: 0,
+      limit: 20,
+    };
+    const errors = {
+      message: "Bad Request",
+    };
 
+    // if (page || size) {
     if (page) {
       page = Number(page);
     } else {
@@ -100,10 +108,6 @@ router.get(
       size = Number(size);
     } else {
       size = 20;
-    };
-
-    const errors = {
-      message: "Bad Request",
     };
 
     if (page > 10) {
@@ -124,15 +128,39 @@ router.get(
         invalid = true;
     };
 
+    if (page) {
+      filters.offset = size * (page - 1);
+    }
+    if (size) {
+      filters.limit = size;
+    }
+
+    // };
+
+    // if (maxLat || minLat) {
+    // };
+
+    // if (maxLng || minLng) {
+    //   invalid = true;
+    // };
+
+    // if (maxPrice || minPrice) {
+    //   invalid = true;
+    // };
+
+
     if (invalid) {
+      invalid = false;
+
       return res.status(400).json({
         ...errors
       })
     };
 
     const Spots = await Spot.findAll({
-      offset: size * (page - 1),
-      limit: size
+      // offset: size * (page - 1),
+      // limit: size,
+      ...filters
     });
 
     return res.json({
