@@ -87,10 +87,58 @@ router.post(
 router.get(
   '',
   async (req, res) => {
-    const Spots = await Spot.findAll();
+    let { page, size } = req.query;
+    let invalid = false;
+
+    if (page) {
+      page = Number(page);
+    } else {
+      page = 1;
+    };
+
+    if (size) {
+      size = Number(size);
+    } else {
+      size = 20;
+    };
+
+    const errors = {
+      message: "Bad Request",
+    };
+
+    if (page > 10) {
+      page = 10;
+    };
+
+    if (page < 1) {
+      errors.page = "Page must be greater than or equal to 1",
+        invalid = true;
+    };
+
+    if (size > 20) {
+      size = 20;
+    };
+
+    if (size < 1) {
+      errors.size = "Size must be greater than or equal to 1",
+        invalid = true;
+    };
+
+    if (invalid) {
+      return res.status(400).json({
+        ...errors
+      })
+    };
+
+    const Spots = await Spot.findAll({
+      offset: size * (page - 1),
+      limit: size
+    });
 
     return res.json({
-      Spots
+      Spots,
+      page,
+      size
     })
   }
 );
