@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, User } = require('../../db/models');
+const { Spot, User, Image } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -226,6 +226,71 @@ router.delete(
   }
 );
 
+// Add an Image to a Spot based on the Spot's id
+router.post(
+  '/:spotId/images',
+  async (req, res) => {
+    const theSpot = await Spot.findByPk(req.params.spotId);
+    const currUserId = req.user.id;
+
+    if (!theSpot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found"
+      })
+    };
+
+    if (theSpot.ownerId !== currUserId) {
+      return res.status(403).json({
+        message: "Spot must belong to the current user"
+      })
+    };
+
+    const spotPreviewImage = await Image.findOne({
+      where: {
+        imageableId: theSpot.id,
+        imageableType: 'spot',
+        preview: true
+      }
+    });
+
+    const { url, preview } = req.body;
+
+    const theSpotImages = await Image.findAll({
+      where: {
+        imageableId: theSpot.id,
+        imageableType: 'spot'
+      }
+    });
+
+    if (theSpotImages.length === 10) {
+      return res.status(403).json({
+        message: "Maximum number of images for this resource was reached"
+      })
+    };
+
+    if (spotPreviewImage && preview === true) {
+      spotPreviewImage.set({
+        preview: false
+      });
+
+      await spotPreviewImage.save()
+    };
+
+    const imageableId = theSpot.id;
+    const imageableType = 'spot';
+
+    const newImage = await Image.create({ url, preview, imageableId, imageableType });
+    const imageInfo = {
+      id: newImage.id,
+      url: newImage.url,
+      preview: newImage.preview
+    }
+
+    return res.json({
+      ...imageInfo
+    })
+  }
+);
 
 
 

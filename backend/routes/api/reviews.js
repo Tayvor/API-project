@@ -4,7 +4,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
-const { Spot, User, Review } = require('../../db/models');
+const { Spot, User, Review, Image } = require('../../db/models');
 
 const validateReview = [
   check('review')
@@ -200,6 +200,54 @@ router.post(
 );
 
 // Add an Image to a Review based on the Review's id
+router.post(
+  '/:reviewId/images',
+  async (req, res) => {
+    const theReview = await Review.findByPk(req.params.reviewId);
+    const currUserId = req.user.id;
+
+    if (!theReview) {
+      return res.status(404).json({
+        message: "Review couldn't be found"
+      })
+    };
+
+    if (theReview.userId !== currUserId) {
+      return res.status(403).json({
+        message: "Spot must belong to the current user"
+      })
+    };
+
+    const theReviewImages = await Image.findAll({
+      where: {
+        imageableId: theReview.id,
+        imageableType: 'review'
+      }
+    });
+
+    if (theReviewImages.length === 10) {
+      return res.status(403).json({
+        message: "Maximum number of images for this resource was reached"
+      })
+    };
+
+    const { url } = req.body;
+    const imageableId = theReview.id;
+    const imageableType = 'review';
+    const preview = false;
+
+    const newImage = await Image.create({ url, imageableId, imageableType, preview });
+
+    const reviewImageInfo = {
+      id: newImage.id,
+      url: newImage.url
+    }
+
+    return res.json({
+      ...reviewImageInfo
+    });
+  }
+);
 
 // Edit a Review
 router.put(
