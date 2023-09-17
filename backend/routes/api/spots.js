@@ -104,7 +104,7 @@ router.get(
     };
 
     const errors = {};
-    const filters = {};
+    // const filters = {};
     const where = {};
 
     if (minLat || maxLat || minLng || maxLng || minPrice || maxPrice) {
