@@ -202,6 +202,12 @@ router.get(
     const spotId = req.params.spotId;
     const theSpot = await Spot.findByPk(spotId);
 
+    if (!theSpot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found"
+      })
+    };
+
     if (theSpot) {
       const owner = await User.findByPk(theSpot.ownerId);
 
@@ -209,7 +215,25 @@ router.get(
         id: theSpot.ownerId,
         firstName: owner.firstName,
         lastName: owner.lastName
-      }
+      };
+
+      const SpotImages = [];
+      const images = await Image.findAll({
+        where: {
+          imageableId: theSpot.id,
+          imageableType: 'spot'
+        }
+      });
+
+      for (const image of images) {
+        const anImage = {
+          id: image.id,
+          url: image.url,
+          preview: image.preview,
+        };
+
+        SpotImages.push(anImage);
+      };
 
       const details = {
         id: theSpot.id,
@@ -225,22 +249,13 @@ router.get(
         price: theSpot.price,
         numReviews: 'UPDATE ME',
         avgStarRating: 'UPDATE ME',
-        SpotImages: [
-          {
-            id: null,
-            url: null,
-            preview: false
-          }
-        ],
+        SpotImages,
         Owner: ownerDetails
       }
       return res.json({
         ...details
-      })
-    }
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    })
+      });
+    };
   }
 );
 
@@ -256,8 +271,20 @@ router.put(
     };
 
     const currUserId = req.user.id;
-
     const theSpot = await Spot.findByPk(req.params.spotId);
+
+    if (!theSpot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found"
+      })
+    };
+
+    if (currUserId !== theSpot.ownerId) {
+      return res.status(403).json({
+        message: "Spot doesn't belong to the current user"
+      })
+    };
+
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     if (theSpot && currUserId === theSpot.ownerId) {
@@ -294,10 +321,7 @@ router.put(
       return res.json({
         ...spotDetails
       })
-    }
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    })
+    };
   }
 );
 
@@ -314,6 +338,18 @@ router.delete(
     const currUserId = req.user.id;
     const theSpot = await Spot.findByPk(req.params.spotId);
 
+    if (!theSpot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found"
+      })
+    };
+
+    if (currUserId !== theSpot.ownerId) {
+      return res.status(403).json({
+        message: "Spot doesn't belong to the current user"
+      })
+    };
+
     if (theSpot && currUserId === theSpot.ownerId) {
       await theSpot.destroy();
 
@@ -321,10 +357,6 @@ router.delete(
         message: 'Successfully deleted'
       })
     };
-
-    return res.status(404).json({
-      message: "Spot couldn't be found"
-    })
   }
 );
 
@@ -339,8 +371,8 @@ router.post(
     };
 
     const currUserId = req.user.id;
-
     const theSpot = await Spot.findByPk(req.params.spotId);
+    let { url, preview } = req.body;
 
     if (!theSpot) {
       return res.status(404).json({
@@ -362,19 +394,8 @@ router.post(
       }
     });
 
-    const { url, preview } = req.body;
-
-    const theSpotImages = await Image.findAll({
-      where: {
-        imageableId: theSpot.id,
-        imageableType: 'spot'
-      }
-    });
-
-    if (theSpotImages.length === 10) {
-      return res.status(403).json({
-        message: "Maximum number of images for this resource was reached"
-      })
+    if (!spotPreviewImage) {
+      preview = true
     };
 
     if (spotPreviewImage && preview === true) {
@@ -385,6 +406,19 @@ router.post(
       await spotPreviewImage.save()
     };
 
+    const theSpotImages = await Image.findAll({
+      where: {
+        imageableId: theSpot.id,
+        imageableType: 'spot'
+      }
+    });
+
+    if (theSpotImages.length >= 10) {
+      return res.status(403).json({
+        message: "Maximum number of images for this resource was reached"
+      })
+    };
+
     const imageableId = theSpot.id;
     const imageableType = 'spot';
 
@@ -393,7 +427,7 @@ router.post(
       id: newImage.id,
       url: newImage.url,
       preview: newImage.preview
-    }
+    };
 
     return res.json({
       ...imageInfo

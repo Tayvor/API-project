@@ -276,6 +276,7 @@ router.put(
       })
     };
 
+    const currUserId = req.user.id;
     const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
@@ -284,26 +285,34 @@ router.put(
       })
     };
 
-    const { review, stars } = req.body;
-
-    theReview.set({
-      content: review,
-      starRating: stars
-    });
-
-    await theReview.save();
-
-    const updatedReview = {
-      id: theReview.id,
-      userId: theReview.userId,
-      spotId: theReview.spotId,
-      review: theReview.content,
-      stars: theReview.starRating,
-      createdAt: theReview.createdAt,
-      updatedAt: theReview.updatedAt
+    if (currUserId !== theReview.userId) {
+      return res.status(403).json({
+        message: "Review doesn't belong to the current user"
+      })
     };
 
-    return res.json(updatedReview);
+    const { review, stars } = req.body;
+
+    if (theReview && currUserId === theReview.userId) {
+      theReview.set({
+        content: review,
+        starRating: stars
+      });
+
+      await theReview.save();
+
+      const updatedReview = {
+        id: theReview.id,
+        userId: theReview.userId,
+        spotId: theReview.spotId,
+        review: theReview.content,
+        stars: theReview.starRating,
+        createdAt: theReview.createdAt,
+        updatedAt: theReview.updatedAt
+      };
+
+      return res.json(updatedReview);
+    };
   }
 );
 
@@ -326,13 +335,19 @@ router.delete(
       })
     };
 
-    if (theReview.userId === currUserId) {
+    if (theReview && currUserId !== theReview.userId) {
+      return res.status(403).json({
+        message: "Review doesn't belong to the current user"
+      })
+    };
+
+    if (theReview && theReview.userId === currUserId) {
       await theReview.destroy();
 
       return res.json({
         message: 'Successfully deleted'
       })
-    }
+    };
   }
 );
 

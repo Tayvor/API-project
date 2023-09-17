@@ -250,7 +250,7 @@ router.put(
     const theSpot = await Spot.findByPk(theBooking.spotId);
 
     if (theBooking.userId !== currUserId) {
-      return res.status(401).json({
+      return res.status(403).json({
         message: "Booking must belong to the current user"
       })
     };
@@ -265,7 +265,7 @@ router.put(
       return res.status(403).json({
         message: "Past bookings can't be modified"
       })
-    }
+    };
 
     let invalidDate = false;
     const error = {
@@ -356,10 +356,17 @@ router.delete(
 
     const currUserId = req.user.id;
     const theBooking = await Booking.findByPk(req.params.bookingId);
+    const theSpot = await Spot.findByPk(theBooking.spotId);
 
     if (!theBooking) {
       return res.status(404).json({
         message: "Booking couldn't be found"
+      })
+    };
+
+    if (currUserId !== theBooking.userId || currUserId !== theSpot.ownerId) {
+      return res.status(403).json({
+        message: "Booking or Spot does not belong to the current user"
       })
     };
 
@@ -371,8 +378,6 @@ router.delete(
         message: "Bookings that have been started can't be deleted"
       })
     };
-
-    const theSpot = await Spot.findByPk(theBooking.spotId);
 
     if (theBooking.userId === currUserId || theSpot.ownerId === currUserId) {
       await theBooking.destroy();
