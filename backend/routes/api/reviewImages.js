@@ -8,6 +8,14 @@ const { Spot, Image, Review } = require('../../db/models');
 router.delete(
   '/:imageId',
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
+    const currUserId = req.user.id;
+
     const theImage = await Image.findOne({
       where: {
         id: req.params.imageId,
@@ -21,13 +29,11 @@ router.delete(
       })
     };
 
-    const currUserId = req.user.id;
-
     const theReview = await Review.findByPk(theImage.imageableId);
 
     if (theReview.userId !== currUserId) {
       return res.status(403).json({
-        message: "Review must belong to the current user"
+        message: "Forbidden"
       })
     };
 
