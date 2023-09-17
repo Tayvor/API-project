@@ -26,8 +26,13 @@ const validateReview = [
 router.get(
   '/current',
   async (req, res) => {
-    const currUserId = req.user.id;
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
 
+    const currUserId = req.user.id;
     const currUserReviews = await Review.findAll({
       where: { userId: currUserId }
     });
@@ -149,10 +154,15 @@ router.get(
 router.post(
   '/:spotId/reviews',
   validateReview,
-
   async (req, res) => {
-    const theSpotId = Number(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theSpotId = Number(req.params.spotId);
 
     const spotReviewsByCurrUser = await Review.findAll({
       where: {
@@ -203,8 +213,14 @@ router.post(
 router.post(
   '/:reviewId/images',
   async (req, res) => {
-    const theReview = await Review.findByPk(req.params.reviewId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
       return res.status(404).json({
@@ -254,6 +270,12 @@ router.put(
   '/:reviewId',
   validateReview,
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
@@ -289,8 +311,14 @@ router.put(
 router.delete(
   '/:reviewId',
   async (req, res) => {
-    const theReview = await Review.findByPk(req.params.reviewId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
       return res.status(404).json({

@@ -8,6 +8,14 @@ const { Spot, Image, Review } = require('../../db/models');
 router.delete(
   '/:imageId',
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
+    const currUserId = req.user.id;
+
     const theImage = await Image.findOne({
       where: {
         id: req.params.imageId,
@@ -20,8 +28,6 @@ router.delete(
         message: "Review Image couldn't be found"
       })
     };
-
-    const currUserId = req.user.id;
 
     const theReview = await Review.findByPk(theImage.imageableId);
 

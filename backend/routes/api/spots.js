@@ -56,9 +56,15 @@ router.post(
   '',
   validateSpot,
   async (req, res) => {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const ownerId = req.user.id;
 
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
     const safeSpot = {
@@ -175,7 +181,14 @@ router.get(
 router.get(
   '/current',
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+
     const Spots = await Spot.findAll({ where: { ownerId: currUserId } });
 
     return res.json({ Spots });
@@ -236,9 +249,16 @@ router.put(
   '/:spotId',
   validateSpot,
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
+    const currUserId = req.user.id;
+
     const theSpot = await Spot.findByPk(req.params.spotId);
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
-    const currUserId = req.user.id;
 
     if (theSpot && currUserId === theSpot.ownerId) {
       theSpot.set({
@@ -285,6 +305,12 @@ router.put(
 router.delete(
   '/:spotId',
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
     const theSpot = await Spot.findByPk(req.params.spotId);
 
@@ -306,8 +332,15 @@ router.delete(
 router.post(
   '/:spotId/images',
   async (req, res) => {
-    const theSpot = await Spot.findByPk(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+
+    const theSpot = await Spot.findByPk(req.params.spotId);
 
     if (!theSpot) {
       return res.status(404).json({

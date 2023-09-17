@@ -18,8 +18,13 @@ const validateBooking = [
 router.get(
   '/current',
   async (req, res) => {
-    const currUserId = req.user.id;
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
 
+    const currUserId = req.user.id;
     const currUserBookings = await Booking.findAll({
       where: {
         userId: currUserId
@@ -65,9 +70,15 @@ router.get(
 router.get(
   '/:spotId/bookings',
   async (req, res) => {
-    const theSpot = await Spot.findByPk(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
-    const theUser = await User.findByPk(req.user.id);
+    const currUser = await User.findByPk(currUserId);
+    const theSpot = await Spot.findByPk(req.params.spotId);
 
     if (!theSpot) {
       return res.status(404).json({
@@ -100,9 +111,9 @@ router.get(
     for (const booking of Bookings) {
       const aBooking = {
         User: {
-          id: theUser.id,
-          firstName: theUser.firstName,
-          lastName: theUser.lastName
+          id: currUser.id,
+          firstName: currUser.firstName,
+          lastName: currUser.lastName
         },
         id: booking.id,
         spotId: booking.spotId,
@@ -124,8 +135,14 @@ router.get(
 router.post(
   '/:spotId/bookings',
   async (req, res) => {
-    const theSpot = await Spot.findByPk(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theSpot = await Spot.findByPk(req.params.spotId);
 
     if (!theSpot) {
       return res.status(404).json({
@@ -211,12 +228,18 @@ router.post(
   }
 );
 
-// Edit a Booking //unfinished
+// Edit a Booking
 router.put(
   '/:bookingId',
   async (req, res) => {
-    const theBooking = await Booking.findByPk(req.params.bookingId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theBooking = await Booking.findByPk(req.params.bookingId);
 
     if (!theBooking) {
       return res.status(404).json({
@@ -325,8 +348,14 @@ router.put(
 router.delete(
   '/:bookingId',
   async (req, res) => {
-    const theBooking = await Booking.findByPk(req.params.bookingId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theBooking = await Booking.findByPk(req.params.bookingId);
 
     if (!theBooking) {
       return res.status(404).json({
