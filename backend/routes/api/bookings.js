@@ -277,7 +277,7 @@ router.put(
     const end = new Date(endDate).getTime();
 
     const oldStart = new Date(theBooking.startDate).getTime();
-    const oldEnd = new Date(theBooking.endDate).getTime();
+    // const oldEnd = new Date(theBooking.endDate).getTime();
 
     const todayTime = new Date().getTime();
 
