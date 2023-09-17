@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, User, Booking } = require('../../db/models');
+const { Spot, User, Booking, Image } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -18,8 +18,13 @@ const validateBooking = [
 router.get(
   '/current',
   async (req, res) => {
-    const currUserId = req.user.id;
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
 
+    const currUserId = req.user.id;
     const currUserBookings = await Booking.findAll({
       where: {
         userId: currUserId
@@ -33,6 +38,14 @@ router.get(
       const bookingDetails = {};
       const aSpot = {};
 
+      const previewImage = await Image.findOne({
+        where: {
+          imageableId: theSpot.id,
+          imageableType: 'spot',
+          preview: true
+        }
+      });
+
       aSpot.id = theSpot.id;
       aSpot.ownerId = theSpot.ownerId;
       aSpot.address = theSpot.address;
@@ -43,7 +56,10 @@ router.get(
       aSpot.lng = theSpot.lng;
       aSpot.name = theSpot.name;
       aSpot.price = theSpot.price;
-      aSpot.previewImage = theSpot.previewImage;
+
+      if (previewImage) {
+        aSpot.previewImage = previewImage.url;
+      };
 
       bookingDetails.id = booking.id;
       bookingDetails.spotId = booking.spotId;
@@ -65,15 +81,21 @@ router.get(
 router.get(
   '/:spotId/bookings',
   async (req, res) => {
-    const theSpot = await Spot.findByPk(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
-    const theUser = await User.findByPk(req.user.id);
+    const currUser = await User.findByPk(currUserId);
+    const theSpot = await Spot.findByPk(req.params.spotId);
 
     if (!theSpot) {
       return res.status(404).json({
         message: "Spot couldn't be found"
       })
-    }
+    };
 
     const Bookings = await Booking.findAll({
       where: {
@@ -98,11 +120,13 @@ router.get(
     };
 
     for (const booking of Bookings) {
+      const bookingUser = await User.findByPk(booking.userId);
+
       const aBooking = {
         User: {
-          id: theUser.id,
-          firstName: theUser.firstName,
-          lastName: theUser.lastName
+          id: bookingUser.id,
+          firstName: bookingUser.firstName,
+          lastName: bookingUser.lastName
         },
         id: booking.id,
         spotId: booking.spotId,
@@ -124,12 +148,24 @@ router.get(
 router.post(
   '/:spotId/bookings',
   async (req, res) => {
-    const theSpot = await Spot.findByPk(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theSpot = await Spot.findByPk(req.params.spotId);
 
     if (!theSpot) {
       return res.status(404).json({
         message: "Spot couldn't be found"
+      })
+    };
+
+    if (theSpot.ownerId === currUserId) {
+      return res.status(403).json({
+        message: "Forbidden"
       })
     };
 
@@ -206,17 +242,21 @@ router.post(
         ...formattedBooking
       })
     };
-
-    return res.status(401).json({ message: 'Current user is the owner of the Spot, and cannot create a booking' });
   }
 );
 
-// Edit a Booking //unfinished
+// Edit a Booking
 router.put(
   '/:bookingId',
   async (req, res) => {
-    const theBooking = await Booking.findByPk(req.params.bookingId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theBooking = await Booking.findByPk(req.params.bookingId);
 
     if (!theBooking) {
       return res.status(404).json({
@@ -227,8 +267,8 @@ router.put(
     const theSpot = await Spot.findByPk(theBooking.spotId);
 
     if (theBooking.userId !== currUserId) {
-      return res.status(401).json({
-        message: "Booking must belong to the current user"
+      return res.status(403).json({
+        message: "Forbidden"
       })
     };
 
@@ -236,13 +276,16 @@ router.put(
     const start = new Date(startDate).getTime();
     const end = new Date(endDate).getTime();
 
+    const oldStart = new Date(theBooking.startDate).getTime();
+    const oldEnd = new Date(theBooking.endDate).getTime();
+
     const todayTime = new Date().getTime();
 
-    if (end < todayTime) {
+    if (oldStart < todayTime) {
       return res.status(403).json({
         message: "Past bookings can't be modified"
       })
-    }
+    };
 
     let invalidDate = false;
     const error = {
@@ -325,12 +368,26 @@ router.put(
 router.delete(
   '/:bookingId',
   async (req, res) => {
-    const theBooking = await Booking.findByPk(req.params.bookingId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theBooking = await Booking.findByPk(req.params.bookingId);
 
     if (!theBooking) {
       return res.status(404).json({
         message: "Booking couldn't be found"
+      })
+    };
+
+    const theSpot = await Spot.findByPk(theBooking.spotId);
+
+    if (currUserId !== theBooking.userId && currUserId !== theSpot.ownerId) {
+      return res.status(403).json({
+        message: "Forbidden"
       })
     };
 
@@ -342,8 +399,6 @@ router.delete(
         message: "Bookings that have been started can't be deleted"
       })
     };
-
-    const theSpot = await Spot.findByPk(theBooking.spotId);
 
     if (theBooking.userId === currUserId || theSpot.ownerId === currUserId) {
       await theBooking.destroy();

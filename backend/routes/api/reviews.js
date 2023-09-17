@@ -26,8 +26,13 @@ const validateReview = [
 router.get(
   '/current',
   async (req, res) => {
-    const currUserId = req.user.id;
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
 
+    const currUserId = req.user.id;
     const currUserReviews = await Review.findAll({
       where: { userId: currUserId }
     });
@@ -51,6 +56,14 @@ router.get(
     for (const review of currUserReviews) {
       const spotDetails = await Spot.findByPk(review.spotId);
 
+      const prevImg = await Image.findOne({
+        where: {
+          imageableId: spotDetails.id,
+          imageableType: 'spot',
+          preview: true
+        }
+      });
+
       const spotObj = {
         id: spotDetails.id,
         ownerId: spotDetails.ownerId,
@@ -62,7 +75,29 @@ router.get(
         lng: spotDetails.lng,
         name: spotDetails.name,
         price: spotDetails.price,
-        previewImage: "I NEED FIXED!!"
+        previewImage: null
+      };
+
+      if (prevImg) {
+        spotObj.previewImage = prevImg.url
+      };
+
+      const spotReviewImages = await Image.findAll({
+        where: {
+          imageableId: review.id,
+          imageableType: 'review',
+        }
+      });
+
+      const ReviewImages = [];
+
+      for (const reviewImg of spotReviewImages) {
+        const revImg = {
+          id: reviewImg.id,
+          url: reviewImg.url
+        };
+
+        ReviewImages.push(revImg);
       };
 
       const safeReview = {
@@ -75,12 +110,7 @@ router.get(
         updatedAt: review.updatedAt,
         User: { ...userObj },
         Spot: { ...spotObj },
-        ReviewImages: [
-          {
-            id: 'fix me',
-            url: 'fix me too please'
-          }
-        ]
+        ReviewImages,
       };
 
       Reviews.push(safeReview);
@@ -102,7 +132,8 @@ router.get(
       return res.status(404).json({
         message: "Spot couldn't be found"
       })
-    }
+    };
+
     const spotReviews = await Review.findAll({
       where: {
         spotId: req.params.spotId
@@ -110,38 +141,52 @@ router.get(
     });
 
     const reviewData = [];
+    const ReviewImages = [];
 
-    for (const review of spotReviews) {
-      const reviewAuthor = await User.findByPk(review.userId);
-      const userDetails = {
-        id: reviewAuthor.id,
-        firstName: reviewAuthor.firstName,
-        lastName: reviewAuthor.lastName
-      }
+    if (spotReviews) {
+      for (const review of spotReviews) {
+        const reviewAuthor = await User.findByPk(review.userId);
+        const userDetails = {
+          id: reviewAuthor.id,
+          firstName: reviewAuthor.firstName,
+          lastName: reviewAuthor.lastName
+        };
 
-      const formattedReview = {
-        id: review.id,
-        userId: review.userId,
-        spotId: review.spotId,
-        review: review.content,
-        stars: review.starRating,
-        createdAt: review.createdAt,
-        updatedAt: review.updatedAt,
-        User: { ...userDetails },
-        ReviewImages: [
-          {
-            id: 'fix me',
-            url: 'fix me'
+        const reviewImages = await Image.findAll({
+          where: {
+            imageableId: review.id,
+            imageableType: 'review'
           }
-        ]
-      }
+        });
 
-      reviewData.push(formattedReview)
-    }
+        for (const reviewImg of reviewImages) {
+          const revImg = {
+            id: reviewImg.id,
+            url: reviewImg.url
+          };
 
-    return res.json({
-      Reviews: reviewData
-    })
+          ReviewImages.push(revImg);
+        };
+
+        const formattedReview = {
+          id: review.id,
+          userId: review.userId,
+          spotId: review.spotId,
+          review: review.content,
+          stars: review.starRating,
+          createdAt: review.createdAt,
+          updatedAt: review.updatedAt,
+          User: { ...userDetails },
+          ReviewImages,
+        };
+
+        reviewData.push(formattedReview);
+      };
+
+      return res.json({
+        Reviews: reviewData
+      });
+    };
   }
 );
 
@@ -149,10 +194,15 @@ router.get(
 router.post(
   '/:spotId/reviews',
   validateReview,
-
   async (req, res) => {
-    const theSpotId = Number(req.params.spotId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theSpotId = Number(req.params.spotId);
 
     const spotReviewsByCurrUser = await Review.findAll({
       where: {
@@ -203,8 +253,14 @@ router.post(
 router.post(
   '/:reviewId/images',
   async (req, res) => {
-    const theReview = await Review.findByPk(req.params.reviewId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
       return res.status(404).json({
@@ -214,7 +270,7 @@ router.post(
 
     if (theReview.userId !== currUserId) {
       return res.status(403).json({
-        message: "Spot must belong to the current user"
+        message: "Forbidden"
       })
     };
 
@@ -254,6 +310,13 @@ router.put(
   '/:reviewId',
   validateReview,
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
+    const currUserId = req.user.id;
     const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
@@ -262,26 +325,34 @@ router.put(
       })
     };
 
-    const { review, stars } = req.body;
-
-    theReview.set({
-      content: review,
-      starRating: stars
-    });
-
-    await theReview.save();
-
-    const updatedReview = {
-      id: theReview.id,
-      userId: theReview.userId,
-      spotId: theReview.spotId,
-      review: theReview.content,
-      stars: theReview.starRating,
-      createdAt: theReview.createdAt,
-      updatedAt: theReview.updatedAt
+    if (currUserId !== theReview.userId) {
+      return res.status(403).json({
+        message: "Forbidden"
+      })
     };
 
-    return res.json(updatedReview);
+    const { review, stars } = req.body;
+
+    if (theReview && currUserId === theReview.userId) {
+      theReview.set({
+        content: review,
+        starRating: stars
+      });
+
+      await theReview.save();
+
+      const updatedReview = {
+        id: theReview.id,
+        userId: theReview.userId,
+        spotId: theReview.spotId,
+        review: theReview.content,
+        stars: theReview.starRating,
+        createdAt: theReview.createdAt,
+        updatedAt: theReview.updatedAt
+      };
+
+      return res.json(updatedReview);
+    };
   }
 );
 
@@ -289,8 +360,14 @@ router.put(
 router.delete(
   '/:reviewId',
   async (req, res) => {
-    const theReview = await Review.findByPk(req.params.reviewId);
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Authentication required"
+      })
+    };
+
     const currUserId = req.user.id;
+    const theReview = await Review.findByPk(req.params.reviewId);
 
     if (!theReview) {
       return res.status(404).json({
@@ -298,13 +375,19 @@ router.delete(
       })
     };
 
-    if (theReview.userId === currUserId) {
+    if (theReview && currUserId !== theReview.userId) {
+      return res.status(403).json({
+        message: "Forbidden"
+      })
+    };
+
+    if (theReview && theReview.userId === currUserId) {
       await theReview.destroy();
 
       return res.json({
         message: 'Successfully deleted'
       })
-    }
+    };
   }
 );
 
