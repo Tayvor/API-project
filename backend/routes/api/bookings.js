@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, User, Booking } = require('../../db/models');
+const { Spot, User, Booking, Image } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -38,6 +38,14 @@ router.get(
       const bookingDetails = {};
       const aSpot = {};
 
+      const previewImage = await Image.findOne({
+        where: {
+          imageableId: theSpot.id,
+          imageableType: 'spot',
+          preview: true
+        }
+      });
+
       aSpot.id = theSpot.id;
       aSpot.ownerId = theSpot.ownerId;
       aSpot.address = theSpot.address;
@@ -48,7 +56,10 @@ router.get(
       aSpot.lng = theSpot.lng;
       aSpot.name = theSpot.name;
       aSpot.price = theSpot.price;
-      aSpot.previewImage = theSpot.previewImage;
+
+      if (previewImage) {
+        aSpot.previewImage = previewImage.url;
+      };
 
       bookingDetails.id = booking.id;
       bookingDetails.spotId = booking.spotId;
@@ -84,7 +95,7 @@ router.get(
       return res.status(404).json({
         message: "Spot couldn't be found"
       })
-    }
+    };
 
     const Bookings = await Booking.findAll({
       where: {
@@ -109,11 +120,13 @@ router.get(
     };
 
     for (const booking of Bookings) {
+      const bookingUser = await User.findByPk(booking.userId);
+
       const aBooking = {
         User: {
-          id: currUser.id,
-          firstName: currUser.firstName,
-          lastName: currUser.lastName
+          id: bookingUser.id,
+          firstName: bookingUser.firstName,
+          lastName: bookingUser.lastName
         },
         id: booking.id,
         spotId: booking.spotId,
@@ -147,6 +160,12 @@ router.post(
     if (!theSpot) {
       return res.status(404).json({
         message: "Spot couldn't be found"
+      })
+    };
+
+    if (theSpot.ownerId === currUserId) {
+      return res.status(403).json({
+        message: "Forbidden"
       })
     };
 
@@ -223,8 +242,6 @@ router.post(
         ...formattedBooking
       })
     };
-
-    return res.status(401).json({ message: 'Current user is the owner of the Spot, and cannot create a booking' });
   }
 );
 
@@ -251,7 +268,7 @@ router.put(
 
     if (theBooking.userId !== currUserId) {
       return res.status(403).json({
-        message: "Booking must belong to the current user"
+        message: "Forbidden"
       })
     };
 
@@ -259,9 +276,12 @@ router.put(
     const start = new Date(startDate).getTime();
     const end = new Date(endDate).getTime();
 
+    const oldStart = new Date(theBooking.startDate).getTime();
+    const oldEnd = new Date(theBooking.endDate).getTime();
+
     const todayTime = new Date().getTime();
 
-    if (end < todayTime) {
+    if (oldStart < todayTime) {
       return res.status(403).json({
         message: "Past bookings can't be modified"
       })
@@ -356,7 +376,6 @@ router.delete(
 
     const currUserId = req.user.id;
     const theBooking = await Booking.findByPk(req.params.bookingId);
-    const theSpot = await Spot.findByPk(theBooking.spotId);
 
     if (!theBooking) {
       return res.status(404).json({
@@ -364,9 +383,11 @@ router.delete(
       })
     };
 
-    if (currUserId !== theBooking.userId || currUserId !== theSpot.ownerId) {
+    const theSpot = await Spot.findByPk(theBooking.spotId);
+
+    if (currUserId !== theBooking.userId && currUserId !== theSpot.ownerId) {
       return res.status(403).json({
-        message: "Booking or Spot does not belong to the current user"
+        message: "Forbidden"
       })
     };
 

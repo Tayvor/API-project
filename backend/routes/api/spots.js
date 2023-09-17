@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, User, Image } = require('../../db/models');
+const { Spot, User, Image, Review } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+// const spot = require('../../db/models/spot');
 
 const validateSpot = [
   check('address')
@@ -103,57 +104,38 @@ router.get(
       message: "Bad Request",
     };
 
-    // if (page || size) {
     if (page) {
       page = Number(page);
+      if (page > 10) {
+        page = 10;
+      };
+      if (page < 1) {
+        errors.page = "Page must be greater than or equal to 1",
+          invalid = true;
+      };
     } else {
       page = 1;
     };
 
     if (size) {
       size = Number(size);
+      if (size > 20) {
+        size = 20;
+      };
+      if (size < 1) {
+        errors.size = "Size must be greater than or equal to 1",
+          invalid = true;
+      };
     } else {
       size = 20;
     };
 
-    if (page > 10) {
-      page = 10;
-    };
-
-    if (page < 1) {
-      errors.page = "Page must be greater than or equal to 1",
-        invalid = true;
-    };
-
-    if (size > 20) {
-      size = 20;
-    };
-
-    if (size < 1) {
-      errors.size = "Size must be greater than or equal to 1",
-        invalid = true;
-    };
-
     if (page) {
       filters.offset = size * (page - 1);
-    }
+    };
     if (size) {
       filters.limit = size;
-    }
-
-    // };
-
-    // if (maxLat || minLat) {
-    // };
-
-    // if (maxLng || minLng) {
-    //   invalid = true;
-    // };
-
-    // if (maxPrice || minPrice) {
-    //   invalid = true;
-    // };
-
+    };
 
     if (invalid) {
       invalid = false;
@@ -164,10 +146,46 @@ router.get(
     };
 
     const Spots = await Spot.findAll({
-      // offset: size * (page - 1),
-      // limit: size,
       ...filters
     });
+
+    for (const spot of Spots) {
+      let starSum = 0;
+      let reviewCount = 0;
+
+      const previewImage = await Image.findOne({
+        where: {
+          imageableId: spot.id,
+          imageableType: 'spot',
+          preview: true
+        }
+      });
+
+      if (previewImage) {
+        spot.set({
+          previewImage: previewImage.url,
+        })
+      };
+
+      const Reviews = await Review.findAll({
+        where: {
+          spotId: spot.id
+        }
+      });
+
+      for (const review of Reviews) {
+        starSum += review.starRating;
+        reviewCount++;
+      };
+
+      const avgStarRating = starSum / reviewCount;
+
+      spot.set({
+        avgRating: avgStarRating,
+      });
+
+      await spot.save();
+    };
 
     return res.json({
       Spots,
@@ -235,6 +253,28 @@ router.get(
         SpotImages.push(anImage);
       };
 
+      let starSum = 0;
+      let reviewCount = 0;
+
+      const Reviews = await Review.findAll({
+        where: {
+          spotId: theSpot.id
+        }
+      });
+
+      for (const review of Reviews) {
+        starSum += review.starRating;
+        reviewCount++;
+      };
+
+      const avgStarRating = starSum / reviewCount;
+
+      theSpot.set({
+        avgRating: avgStarRating,
+      });
+
+      await theSpot.save();
+
       const details = {
         id: theSpot.id,
         ownerId: theSpot.ownerId,
@@ -247,8 +287,8 @@ router.get(
         name: theSpot.name,
         description: theSpot.description,
         price: theSpot.price,
-        numReviews: 'UPDATE ME',
-        avgStarRating: 'UPDATE ME',
+        numReviews: reviewCount,
+        avgStarRating: theSpot.avgRating,
         SpotImages,
         Owner: ownerDetails
       }
@@ -281,7 +321,7 @@ router.put(
 
     if (currUserId !== theSpot.ownerId) {
       return res.status(403).json({
-        message: "Spot doesn't belong to the current user"
+        message: "Forbidden"
       })
     };
 
@@ -346,7 +386,7 @@ router.delete(
 
     if (currUserId !== theSpot.ownerId) {
       return res.status(403).json({
-        message: "Spot doesn't belong to the current user"
+        message: "Forbidden"
       })
     };
 
@@ -382,7 +422,7 @@ router.post(
 
     if (theSpot.ownerId !== currUserId) {
       return res.status(403).json({
-        message: "Spot must belong to the current user"
+        message: "Forbidden"
       })
     };
 

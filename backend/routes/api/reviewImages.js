@@ -33,7 +33,7 @@ router.delete(
 
     if (theReview.userId !== currUserId) {
       return res.status(403).json({
-        message: "Review must belong to the current user"
+        message: "Forbidden"
       })
     };
 

@@ -33,7 +33,7 @@ router.delete(
 
     if (theSpot.ownerId !== currUserId) {
       return res.status(403).json({
-        message: "Spot must belong to the current user"
+        message: "Forbidden"
       })
     };
 

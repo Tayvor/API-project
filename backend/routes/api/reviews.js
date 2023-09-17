@@ -56,6 +56,14 @@ router.get(
     for (const review of currUserReviews) {
       const spotDetails = await Spot.findByPk(review.spotId);
 
+      const prevImg = await Image.findOne({
+        where: {
+          imageableId: spotDetails.id,
+          imageableType: 'spot',
+          preview: true
+        }
+      });
+
       const spotObj = {
         id: spotDetails.id,
         ownerId: spotDetails.ownerId,
@@ -67,7 +75,29 @@ router.get(
         lng: spotDetails.lng,
         name: spotDetails.name,
         price: spotDetails.price,
-        previewImage: "I NEED FIXED!!"
+        previewImage: null
+      };
+
+      if (prevImg) {
+        spotObj.previewImage = prevImg.url
+      };
+
+      const spotReviewImages = await Image.findAll({
+        where: {
+          imageableId: review.id,
+          imageableType: 'review',
+        }
+      });
+
+      const ReviewImages = [];
+
+      for (const reviewImg of spotReviewImages) {
+        const revImg = {
+          id: reviewImg.id,
+          url: reviewImg.url
+        };
+
+        ReviewImages.push(revImg);
       };
 
       const safeReview = {
@@ -80,12 +110,7 @@ router.get(
         updatedAt: review.updatedAt,
         User: { ...userObj },
         Spot: { ...spotObj },
-        ReviewImages: [
-          {
-            id: 'fix me',
-            url: 'fix me too please'
-          }
-        ]
+        ReviewImages,
       };
 
       Reviews.push(safeReview);
@@ -107,7 +132,8 @@ router.get(
       return res.status(404).json({
         message: "Spot couldn't be found"
       })
-    }
+    };
+
     const spotReviews = await Review.findAll({
       where: {
         spotId: req.params.spotId
@@ -115,38 +141,52 @@ router.get(
     });
 
     const reviewData = [];
+    const ReviewImages = [];
 
-    for (const review of spotReviews) {
-      const reviewAuthor = await User.findByPk(review.userId);
-      const userDetails = {
-        id: reviewAuthor.id,
-        firstName: reviewAuthor.firstName,
-        lastName: reviewAuthor.lastName
-      }
+    if (spotReviews) {
+      for (const review of spotReviews) {
+        const reviewAuthor = await User.findByPk(review.userId);
+        const userDetails = {
+          id: reviewAuthor.id,
+          firstName: reviewAuthor.firstName,
+          lastName: reviewAuthor.lastName
+        };
 
-      const formattedReview = {
-        id: review.id,
-        userId: review.userId,
-        spotId: review.spotId,
-        review: review.content,
-        stars: review.starRating,
-        createdAt: review.createdAt,
-        updatedAt: review.updatedAt,
-        User: { ...userDetails },
-        ReviewImages: [
-          {
-            id: 'fix me',
-            url: 'fix me'
+        const reviewImages = await Image.findAll({
+          where: {
+            imageableId: review.id,
+            imageableType: 'review'
           }
-        ]
-      }
+        });
 
-      reviewData.push(formattedReview)
-    }
+        for (const reviewImg of reviewImages) {
+          const revImg = {
+            id: reviewImg.id,
+            url: reviewImg.url
+          };
 
-    return res.json({
-      Reviews: reviewData
-    })
+          ReviewImages.push(revImg);
+        };
+
+        const formattedReview = {
+          id: review.id,
+          userId: review.userId,
+          spotId: review.spotId,
+          review: review.content,
+          stars: review.starRating,
+          createdAt: review.createdAt,
+          updatedAt: review.updatedAt,
+          User: { ...userDetails },
+          ReviewImages,
+        };
+
+        reviewData.push(formattedReview);
+      };
+
+      return res.json({
+        Reviews: reviewData
+      });
+    };
   }
 );
 
@@ -230,7 +270,7 @@ router.post(
 
     if (theReview.userId !== currUserId) {
       return res.status(403).json({
-        message: "Spot must belong to the current user"
+        message: "Forbidden"
       })
     };
 
@@ -287,7 +327,7 @@ router.put(
 
     if (currUserId !== theReview.userId) {
       return res.status(403).json({
-        message: "Review doesn't belong to the current user"
+        message: "Forbidden"
       })
     };
 
@@ -337,7 +377,7 @@ router.delete(
 
     if (theReview && currUserId !== theReview.userId) {
       return res.status(403).json({
-        message: "Review doesn't belong to the current user"
+        message: "Forbidden"
       })
     };
 
