@@ -191,7 +191,9 @@ router.get(
         errors.page = "Page must be greater than or equal to 1",
           invalid = true;
       };
-      pageSize.offset = size * (page - 1);
+      if (page && size) {
+        pageSize.offset = size * (page - 1);
+      }
     } else {
       page = 1;
     };
