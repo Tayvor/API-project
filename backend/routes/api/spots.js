@@ -67,6 +67,13 @@ router.post(
     const ownerId = req.user.id;
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    if (Number(price) <= 0) {
+      return res.status(400).json({
+        message: "Price must be greater than 0"
+      })
+    };
+
     const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
 
     const safeSpot = {
@@ -184,7 +191,7 @@ router.get(
         errors.page = "Page must be greater than or equal to 1",
           invalid = true;
       };
-      filters.offset = size * (page - 1);
+      pageSize.offset = size * (page - 1);
     } else {
       page = 1;
     };
@@ -198,7 +205,7 @@ router.get(
         errors.size = "Size must be greater than or equal to 1",
           invalid = true;
       };
-      filters.limit = size;
+      pageSize.limit = size;
     } else {
       size = 20;
     };
@@ -394,6 +401,12 @@ router.put(
     };
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    if (Number(price) <= 0) {
+      return res.status(400).json({
+        message: "Price must be greater than 0"
+      })
+    };
 
     if (theSpot && currUserId === theSpot.ownerId) {
       theSpot.set({
