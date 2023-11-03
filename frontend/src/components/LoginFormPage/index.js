@@ -1,40 +1,68 @@
 import { useState } from "react";
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from "../../store/session";
+import { Redirect } from 'react-router-dom';
+import './LoginForm.css'
 
 
-export function LoginFormPage() {
+export default function LoginFormPage() {
+  const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
+
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const dispatch = useDispatch();
-  const history = useHistory();
+  if (sessionUser) return <Redirect to='/' />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const userInfo = {
+    const userCreds = {
       credential: credential,
       password: password,
     }
+    setErrors({});
 
-    dispatch(loginUser(userInfo));
-
-    history.push('/')
-  }
+    // .catch isn't working as intended
+    return dispatch(loginUser(userCreds)).catch(
+      async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      }
+    );
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Credential:
-        <input onChange={e => setCredential(e.target.value)}></input>
-      </label>
-      <label>Password:
-        <input onChange={e => setPassword(e.target.value)}></input>
-      </label>
-      <button disabled={!credential || !password ? true : false}>Submit</button>
-    </form>
+    <>
+      <h1 className="login">Log In:</h1>
+      <form onSubmit={handleSubmit} className="loginForm">
+        <label>Credential:
+          <input
+            type="text"
+            value={credential}
+            onChange={e => setCredential(e.target.value)}
+            required
+          >
+          </input>
+        </label>
+        <label>Password:
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          >
+          </input>
+        </label>
+        {errors.credential && <p>{errors.credential}</p>}
+        <button
+          disabled={!credential || !password ? true : false}
+          className="loginBtn"
+        >
+          Submit
+        </button>
+      </form>
+    </>
   )
 }
-
-// export LoginFormPage;
