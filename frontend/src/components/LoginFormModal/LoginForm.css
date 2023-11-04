@@ -1,0 +1,14 @@
+.login {
+  color: red;
+}
+
+.loginForm {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.loginBtn {
+  width: 75px;
+}

@@ -1,0 +1,61 @@
+import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { useModal } from "../../context/Modal";
+import * as sessionActions from "../../store/session";
+import './LoginForm.css'
+
+
+export default function LoginFormModal() {
+  const dispatch = useDispatch();
+  const [credential, setCredential] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+  const { closeModal } = useModal();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrors({});
+    // .catch isn't working as intended
+    return dispatch(sessionActions.loginUser({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
+  };
+
+  return (
+    <>
+      <h1 className="login">Log In:</h1>
+      <form onSubmit={handleSubmit} className="loginForm">
+        <label>Credential:
+          <input
+            type="text"
+            value={credential}
+            onChange={e => setCredential(e.target.value)}
+            required
+          >
+          </input>
+        </label>
+        <label>Password:
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          >
+          </input>
+        </label>
+        {errors.credential && <p>{errors.credential}</p>}
+        <button
+          disabled={!credential || !password ? true : false}
+          className="loginBtn"
+        >
+          Submit
+        </button>
+      </form>
+    </>
+  )
+}
