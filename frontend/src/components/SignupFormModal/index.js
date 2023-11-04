@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
 import * as sessionActions from '../../store/session';
 import './SignupForm.css'
 
-export default function SignupFormPage() {
+export default function SignupFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -14,67 +13,38 @@ export default function SignupFormPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
-
-  if (sessionUser) return <Redirect to='/' />;
+  const { closeModal } = useModal();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    setErrors({});
-    const err = {};
-
-    if (password !== confirmPassword) {
-      err.password = 'Passwords do not match!'
-      setErrors(err);
-      return
+    if (password === confirmPassword) {
+      setErrors({});
+      return dispatch(
+        sessionActions.signup({
+          email,
+          username,
+          firstName,
+          lastName,
+          password,
+        })
+      )
+        .then(closeModal)
+        .catch(async (res) => {
+          const data = await res.json();
+          if (data && data.errors) {
+            setErrors(data.errors);
+          }
+        });
     }
-
-    return dispatch(
-      sessionActions.signupUser({
-        email,
-        username,
-        firstName,
-        lastName,
-        password,
-      })
-    ).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) {
-        setErrors(data.errors)
-      }
-    })
-  }
+    return setErrors({
+      confirmPassword: "Confirm Password field must be the same as the Password field"
+    });
+  };
 
   return (
     <>
       <h1>Signup:</h1>
       <form onSubmit={handleSignup} className="signupForm">
-        <label>
-          Username:
-          <input
-            type="text"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-            required
-          ></input>
-        </label>
-        <label>
-          First Name:
-          <input
-            type="text"
-            onChange={(e) => setFirstName(e.target.value)}
-            value={firstName}
-            required
-          ></input>
-        </label>
-        <label>
-          Last Name:
-          <input
-            type="text"
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-            required
-          ></input>
-        </label>
         <label>
           Email:
           <input
@@ -84,6 +54,37 @@ export default function SignupFormPage() {
             required
           ></input>
         </label>
+        {errors.email && <p>{errors.email}</p>}
+        <label>
+          Username:
+          <input
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            required
+          ></input>
+        </label>
+        {errors.username && <p>{errors.username}</p>}
+        <label>
+          First Name:
+          <input
+            type="text"
+            onChange={(e) => setFirstName(e.target.value)}
+            value={firstName}
+            required
+          ></input>
+        </label>
+        {errors.firstName && <p>{errors.firstName}</p>}
+        <label>
+          Last Name:
+          <input
+            type="text"
+            onChange={(e) => setLastName(e.target.value)}
+            value={lastName}
+            required
+          ></input>
+        </label>
+        {errors.lastName && <p>{errors.lastName}</p>}
         <label>
           Password:
           <input
@@ -93,6 +94,7 @@ export default function SignupFormPage() {
             required
           ></input>
         </label>
+        {errors.password && <p>{errors.password}</p>}
         <label>
           Confirm Password:
           <input
@@ -102,7 +104,7 @@ export default function SignupFormPage() {
             required
           ></input>
         </label>
-        {errors.password && <span>{errors.password}</span>}
+        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         <button type="submit">Sign Up!</button>
       </form>
     </>
