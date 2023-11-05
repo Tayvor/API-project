@@ -15,11 +15,12 @@ export default function LoginFormModal() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    // .catch isn't working as intended
+
     return dispatch(sessionActions.loginUser({ credential, password }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
+        setErrors({ ...data })
 
         if (data && data.errors) {
           setErrors(data.errors);
@@ -49,7 +50,7 @@ export default function LoginFormModal() {
           >
           </input>
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+        {errors && <p>{errors.message}</p>}
         <button
           disabled={!credential || !password ? true : false}
           className="loginBtn"
