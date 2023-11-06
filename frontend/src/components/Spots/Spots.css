@@ -1,0 +1,12 @@
+.allSpots {
+  border: 3px solid gray;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.spot {
+  border: 2px solid orangered;
+  display: flex;
+  flex-direction: column;
+}
