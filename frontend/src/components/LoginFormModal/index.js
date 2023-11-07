@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
+
 import * as sessionActions from "../../store/session";
+
 import './LoginForm.css'
 
 
 export default function LoginFormModal() {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
@@ -18,6 +24,7 @@ export default function LoginFormModal() {
 
     return dispatch(sessionActions.loginUser({ credential, password }))
       .then(closeModal)
+      .then(history.push('/'))
       .catch(async (res) => {
         const data = await res.json();
         setErrors({ ...data })

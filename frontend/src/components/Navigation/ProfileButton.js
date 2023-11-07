@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+
 import * as sessionActions from '../../store/session';
+
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+
+import './ProfileButton.css'
+
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -39,6 +44,11 @@ function ProfileButton({ user }) {
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
+  const manageSpots = (e) => {
+    e.preventDefault();
+    console.log('manage Spots was clicked!!')
+  }
+
   return (
     <>
       <button onClick={openMenu}>
@@ -47,12 +57,12 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
-            <li>
+            <div className="userMenu">
+              <span>{user.firstName} {user.lastName}</span>
+              <span>{user.email}</span>
+              <span onClick={manageSpots}>Manage Spots</span>
               <button onClick={logout}>Log Out</button>
-            </li>
+            </div>
           </>
         ) : (
           <>

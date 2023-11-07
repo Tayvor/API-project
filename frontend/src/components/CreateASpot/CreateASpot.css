@@ -1,0 +1,19 @@
+.newSpotForm {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+h3 {
+  margin-bottom: 0;
+}
+
+p {
+  margin: 0;
+  margin-bottom: 10px;
+}
