@@ -24,8 +24,7 @@ export const createASpot = (newSpotInfo) => async (dispatch) => {
     method: 'POST',
     body: JSON.stringify({ ...newSpotInfo }),
   });
-  // const data = await res.json();
-  // console.log(data, '**************')
+
   return res;
 }
 

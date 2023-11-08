@@ -25,7 +25,7 @@ export default function Spots() {
               key={spot.id}
               className="spot"
             >
-              <img src={blueHouse} style={{ height: 125 }}></img>
+              <img src={blueHouse} style={{ height: 260, width: 270, borderRadius: 15 }}></img>
               {`${spot.city}, ${spot.state}`}
               <span>{`$${spot.price} night`}</span>
             </div>

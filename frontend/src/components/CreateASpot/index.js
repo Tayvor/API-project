@@ -38,14 +38,29 @@ export default function CreateASpot() {
       description: description,
       price: Number(price),
     }
-    // console.log(newSpotInfo)
 
     return dispatch(spotActions.createASpot(newSpotInfo))
       .catch(async (data) => {
         const problem = await data.json();
-        console.log(problem, '(((((((((((((((((((')
+        console.log(problem)
       })
       .then(history.push('/'))
+    // .then(
+    //   setCountry(''),
+    //   setStreetAddress(''),
+    //   setCity(''),
+    //   setState(''),
+    //   setLatitude(0),
+    //   setLongitude(0),
+    //   setDescription(''),
+    //   setTitle(''),
+    //   setPrice(0),
+    //   setImgUrl1(''),
+    //   setImgUrl2(''),
+    //   setImgUrl3(''),
+    //   setImgUrl4(''),
+    //   setImgUrl5(''),
+    // )
   }
 
   return (

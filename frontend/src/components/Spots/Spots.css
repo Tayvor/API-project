@@ -1,12 +1,13 @@
 .allSpots {
-  border: 3px solid gray;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  /* border: 3px solid gray; */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 20px;
 }
 
 .spot {
-  border: 2px solid orangered;
   display: flex;
   flex-direction: column;
+  margin: 10px;
+  justify-self: center;
 }
