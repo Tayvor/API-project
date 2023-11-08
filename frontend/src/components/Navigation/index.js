@@ -13,7 +13,6 @@ export default function Navigation({ isLoaded }) {
   const createASpot = (e) => {
     e.preventDefault();
     history.push('/spots/new');
-    if (sessionUser) console.log(sessionUser);
   };
 
   return (

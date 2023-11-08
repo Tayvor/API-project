@@ -65,7 +65,6 @@ router.post(
     };
 
     const ownerId = req.user.id;
-
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     if (Number(price) <= 0) {

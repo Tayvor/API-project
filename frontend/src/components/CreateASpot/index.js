@@ -1,11 +1,51 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as spotActions from '../../store/spots';
+
 import './CreateASpot.css';
 
 export default function CreateASpot() {
-  const [address, setAddress] = useState('');
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [country, setCountry] = useState('');
+  const [streetAddress, setStreetAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [price, setPrice] = useState(0);
+  const [imgUrl1, setImgUrl1] = useState('');
+  const [imgUrl2, setImgUrl2] = useState('');
+  const [imgUrl3, setImgUrl3] = useState('');
+  const [imgUrl4, setImgUrl4] = useState('');
+  const [imgUrl5, setImgUrl5] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newSpotInfo = {
+      address: streetAddress,
+      city: city,
+      country: country,
+      state: state,
+      lat: latitude,
+      lng: longitude,
+      name: title,
+      description: description,
+      price: Number(price),
+    }
+    // console.log(newSpotInfo)
+
+    return dispatch(spotActions.createASpot(newSpotInfo))
+      .catch(async (data) => {
+        const problem = await data.json();
+        console.log(problem, '(((((((((((((((((((')
+      })
+      .then(history.push('/'))
   }
 
   return (
@@ -18,58 +58,110 @@ export default function CreateASpot() {
 
         <label>
           Country
-          <input></input>
+          <input
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          ></input>
         </label>
         <label>
           Street Address
-          <input></input>
+          <input
+            value={streetAddress}
+            onChange={(e) => setStreetAddress(e.target.value)}
+          ></input>
         </label>
         <label>
           City
-          <input></input>
+          <input
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          ></input>
         </label>
         <label>
           State
-          <input></input>
+          <input
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+          ></input>
         </label>
         <label>
           Latitude
-          <input></input>
+          <input
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
+          ></input>
         </label>
         <label>
           Longitude
-          <input></input>
+          <input
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+          ></input>
         </label>
 
         <h3>Describe your place to guests</h3>
-        <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
+        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
         <label>
-          <textarea></textarea>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
         </label>
 
         <h3>Create a title for your spot</h3>
         <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
         <label>
-          <input></input>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          ></input>
         </label>
 
         <h3>Set a base price for your spot</h3>
         <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
         <label>
-          $<input></input>
+          $<input
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            type="number"
+          ></input>
         </label>
 
         <h3>Liven up your spot with photos</h3>
         <p>Submit a link to at least one photo to publish your spot.</p>
         <label>
-          <input></input>
-          <input></input>
-          <input></input>
-          <input></input>
-          <input></input>
+          <input
+            value={imgUrl1}
+            onChange={(e) => setImgUrl1(e.target.value)}
+          ></input>
+        </label>
+        <label>
+          <input
+            value={imgUrl2}
+            onChange={(e) => setImgUrl2(e.target.value)}
+          ></input>
+        </label>
+        <label>
+          <input
+            value={imgUrl3}
+            onChange={(e) => setImgUrl3(e.target.value)}
+          ></input>
+        </label>
+        <label>
+          <input
+            value={imgUrl4}
+            onChange={(e) => setImgUrl4(e.target.value)}
+          ></input>
+        </label>
+        <label>
+          <input
+            value={imgUrl5}
+            onChange={(e) => setImgUrl5(e.target.value)}
+          ></input>
         </label>
 
-        <button>Create Spot</button>
+
+        <button disabled={errors.length ? true : false}>Create Spot</button>
       </form>
     </>
   )
