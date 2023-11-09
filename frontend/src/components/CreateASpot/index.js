@@ -12,8 +12,8 @@ export default function CreateASpot() {
   const [streetAddress, setStreetAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(20);
+  const [longitude, setLongitude] = useState(20);
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState(0);
@@ -42,9 +42,10 @@ export default function CreateASpot() {
     return dispatch(spotActions.createASpot(newSpotInfo))
       .catch(async (data) => {
         const problem = await data.json();
+        // await setErrors(problem.errors)
         console.log(problem)
       })
-      .then(history.push('/'))
+    // .then(errors ? console.log(errors, '****') : history.push('/'))
     // .then(
     //   setCountry(''),
     //   setStreetAddress(''),

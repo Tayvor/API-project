@@ -10,6 +10,7 @@ import Spots from './components/Spots';
 import CreateASpot from './components/CreateASpot';
 
 import './App.css'
+import SpotDetails from './components/SpotDetails/SpotDetails';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,14 +25,13 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded &&
         <Switch>
-          <Route exact path='/'>
-            <Spots />
-          </Route>
+          <Route exact path='/' component={Spots} />
           <Route path='/spots/new'>
             <div className='createASpot'>
               <CreateASpot />
             </div>
           </Route>
+          <Route path='/spots/:spotId' component={SpotDetails} />
         </Switch>
       }
     </>

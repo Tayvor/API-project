@@ -1,11 +1,10 @@
 import { csrfFetch } from './csrf';
 
-const SHOW_SPOTS = 'SHOW_SPOTS';
-const CREATE_SPOT = 'CREATE_SPOT';
+const GET_SPOTS = 'GET_SPOTS';
 
 const showSpots = (allSpots) => {
   return {
-    type: SHOW_SPOTS,
+    type: GET_SPOTS,
     spots: allSpots
   }
 }
@@ -29,10 +28,11 @@ export const createASpot = (newSpotInfo) => async (dispatch) => {
 }
 
 const spotReducer = (state = {}, action) => {
-  let newState;
+  let newState = {};
   switch (action.type) {
-    case SHOW_SPOTS:
-      newState = { ...action.spots };
+    case GET_SPOTS:
+      const spots = [...action.spots];
+      spots.map((spot) => newState[spot.id] = spot);
       return newState;
 
     default:

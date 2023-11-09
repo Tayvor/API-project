@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 import * as spotActions from '../../store/spots';
+
 import './Spots.css'
 import blueHouse from './images/blueHouse.avif';
 
 export default function Spots() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -24,6 +28,7 @@ export default function Spots() {
             <div
               key={spot.id}
               className="spot"
+              onClick={(e) => history.push(`/spots/${spot.id}`)}
             >
               <img src={blueHouse} style={{ height: 260, width: 270, borderRadius: 15 }}></img>
               {`${spot.city}, ${spot.state}`}

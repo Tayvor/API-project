@@ -11,3 +11,7 @@
   margin: 10px;
   justify-self: center;
 }
+
+.spot:hover {
+  cursor: pointer;
+}
