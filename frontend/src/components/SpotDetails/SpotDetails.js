@@ -10,7 +10,10 @@ export default function SpotDetails() {
   const { spotId } = useParams();
   const theSpot = useSelector((state) => state.spots[spotId]);
 
-  // need to get owner info
+  // Need to grab owner associated with 'theSpot'
+  // const theSpot = await csrfFetch(`/spots/${spotId}`)
+
+  // console.log(theSpot, '*********')
 
   return (
     <>

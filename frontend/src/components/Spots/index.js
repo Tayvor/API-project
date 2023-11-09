@@ -14,6 +14,10 @@ export default function Spots() {
 
   useEffect(() => {
     dispatch(spotActions.getAllSpots())
+      // .catch(async (data) => {
+      //   const problem = await data.json();
+      //   console.log(problem)
+      // })
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 
@@ -21,22 +25,25 @@ export default function Spots() {
 
   return (
     <>
-      {isLoaded && (
-        <div className="allSpots">
-          {allSpots.map((spot) =>
+      {
+        isLoaded && (
+          <div className="allSpots">
+            {allSpots.map((spot) =>
 
-            <div
-              key={spot.id}
-              className="spot"
-              onClick={(e) => history.push(`/spots/${spot.id}`)}
-            >
-              <img src={blueHouse} style={{ height: 260, width: 270, borderRadius: 15 }}></img>
-              {`${spot.city}, ${spot.state}`}
-              <span>{`$${spot.price} night`}</span>
-            </div>
-          )}
-        </div>
-      )}
+              <div
+                key={spot.id}
+                className="spot"
+                onClick={(e) => history.push(`/spots/${spot.id}`)}
+              >
+                <img src={blueHouse} style={{ height: 260, width: 270, borderRadius: 15 }}></img>
+                {`${spot.city}, ${spot.state}`}
+                <span>{`$${spot.price} night`}</span>
+              </div>
+            )}
+          </div>
+        )
+      }
+
     </>
   )
 }

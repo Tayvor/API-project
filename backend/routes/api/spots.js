@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, User, Image, Review } = require('../../db/models');
+const { Spot, User, SpotImage, Review } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -229,10 +229,9 @@ router.get(
       let starSum = 0;
       let reviewCount = 0;
 
-      const previewImage = await Image.findOne({
+      const previewImage = await SpotImage.findOne({
         where: {
-          imageableId: spot.id,
-          imageableType: 'spot',
+          spotId: spot.id,
           preview: true
         }
       });

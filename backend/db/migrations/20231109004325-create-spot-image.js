@@ -1,4 +1,7 @@
 'use strict';
+
+const { BOOLEAN } = require('sequelize');
+
 /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
@@ -26,6 +29,10 @@ module.exports = {
       url: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      preview: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

@@ -10,7 +10,7 @@ export default function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const history = useHistory();
 
-  const createASpot = (e) => {
+  const viewNewSpotForm = (e) => {
     e.preventDefault();
     history.push('/spots/new');
   };
@@ -21,7 +21,7 @@ export default function Navigation({ isLoaded }) {
 
       <div className="header-right">
         {sessionUser ?
-          <button onClick={createASpot}>Create a New Spot</button>
+          <button onClick={viewNewSpotForm}>Create a New Spot</button>
           : null
         }
         {isLoaded && <ProfileButton user={sessionUser} />}
