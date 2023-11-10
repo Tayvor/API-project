@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 import * as sessionActions from '../../store/session';
 
@@ -12,6 +13,7 @@ import './ProfileButton.css'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -46,7 +48,8 @@ function ProfileButton({ user }) {
 
   const manageSpots = (e) => {
     e.preventDefault();
-    console.log('manage Spots was clicked!!')
+    history.push('/spots/current');
+    closeMenu();
   }
 
   return (
@@ -60,8 +63,8 @@ function ProfileButton({ user }) {
             <div className="userMenu">
               <span>{user.firstName} {user.lastName}</span>
               <span>{user.email}</span>
-              <span onClick={manageSpots}>Manage Spots</span>
-              <button onClick={logout}>Log Out</button>
+              <span onClick={manageSpots} className="manageSpots">Manage Spots</span>
+              <button onClick={logout} className="logoutBtn">Log Out</button>
             </div>
           </>
         ) : (

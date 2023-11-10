@@ -32,8 +32,8 @@ function App() {
               <CreateASpot />
             </div>
           </Route>
-          <Route path='/spots/:spotId' component={SpotDetails} />
           <Route path='/spots/current' component={ManageSpots} />
+          <Route exact path='/spots/:spotId' component={SpotDetails} />
         </Switch>
       }
     </>
