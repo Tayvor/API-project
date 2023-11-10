@@ -12,3 +12,13 @@
 .loginBtn {
   width: 75px;
 }
+
+.demoLogin {
+  margin: 10px;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.demoLogin:hover {
+  cursor: pointer;
+}

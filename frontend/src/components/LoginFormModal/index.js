@@ -35,9 +35,16 @@ export default function LoginFormModal() {
       });
   };
 
+  const demoLogin = (e) => {
+    e.preventDefault();
+    // todo
+    // login as demo user, need to create demo user!
+  }
+
   return (
     <>
       <h1 className="login">Log In:</h1>
+
       <form onSubmit={handleSubmit} className="loginForm">
         <label>Credential:
           <input
@@ -48,6 +55,7 @@ export default function LoginFormModal() {
           >
           </input>
         </label>
+
         <label>Password:
           <input
             type="password"
@@ -58,6 +66,7 @@ export default function LoginFormModal() {
           </input>
         </label>
         {errors && <p>{errors.message}</p>}
+
         <button
           disabled={!credential || !password ? true : false}
           className="loginBtn"
@@ -65,6 +74,8 @@ export default function LoginFormModal() {
           Submit
         </button>
       </form>
+
+      <div className="demoLogin">Demo User</div>
     </>
   )
 }

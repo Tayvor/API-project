@@ -1,0 +1,57 @@
+.spotDetails {
+  max-width: 1000px;
+  border: 3px solid black;
+  padding: 1px;
+}
+
+.spotDetailsHeader {
+  border: 2px solid gray;
+}
+
+.spotDetailsFooter {
+  border: 2px solid black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.spotDetailsReserveBox {
+  border: 2px solid lightblue;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.reserveBoxTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reserveBtn {
+  background-color: red;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.reserveBtn:hover {
+  cursor: pointer;
+}
+
+.spotDetailsReviews {
+  border: 2px solid red;
+  margin-top: 10px;
+}
+
+.spotReviews {
+  border: 2px solid lightblue;
+}
+
+.postReviewBtn {
+  color: white;
+  background-color: gray;
+}
+
+.postReviewBtn:hover {
+  cursor: pointer;
+}

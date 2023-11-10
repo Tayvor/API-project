@@ -79,6 +79,7 @@ export default function CreateASpot() {
             onChange={(e) => setCountry(e.target.value)}
           ></input>
         </label>
+
         <label>
           Street Address
           <input
@@ -86,6 +87,7 @@ export default function CreateASpot() {
             onChange={(e) => setStreetAddress(e.target.value)}
           ></input>
         </label>
+
         <label>
           City
           <input
@@ -93,6 +95,7 @@ export default function CreateASpot() {
             onChange={(e) => setCity(e.target.value)}
           ></input>
         </label>
+
         <label>
           State
           <input
@@ -100,6 +103,7 @@ export default function CreateASpot() {
             onChange={(e) => setState(e.target.value)}
           ></input>
         </label>
+
         <label>
           Latitude
           <input
@@ -107,6 +111,7 @@ export default function CreateASpot() {
             onChange={(e) => setLatitude(e.target.value)}
           ></input>
         </label>
+
         <label>
           Longitude
           <input
@@ -151,31 +156,34 @@ export default function CreateASpot() {
             onChange={(e) => setImgUrl1(e.target.value)}
           ></input>
         </label>
+
         <label>
           <input
             value={imgUrl2}
             onChange={(e) => setImgUrl2(e.target.value)}
           ></input>
         </label>
+
         <label>
           <input
             value={imgUrl3}
             onChange={(e) => setImgUrl3(e.target.value)}
           ></input>
         </label>
+
         <label>
           <input
             value={imgUrl4}
             onChange={(e) => setImgUrl4(e.target.value)}
           ></input>
         </label>
+
         <label>
           <input
             value={imgUrl5}
             onChange={(e) => setImgUrl5(e.target.value)}
           ></input>
         </label>
-
 
         <button disabled={errors.length ? true : false}>Create Spot</button>
       </form>

@@ -11,6 +11,7 @@ import CreateASpot from './components/CreateASpot';
 
 import './App.css'
 import SpotDetails from './components/SpotDetails/SpotDetails';
+import ManageSpots from './components/ManageSpots/ManageSpots';
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function App() {
             </div>
           </Route>
           <Route path='/spots/:spotId' component={SpotDetails} />
+          <Route path='/spots/current' component={ManageSpots} />
         </Switch>
       }
     </>

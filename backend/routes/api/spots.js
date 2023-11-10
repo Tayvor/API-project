@@ -310,43 +310,42 @@ router.get(
         lastName: owner.lastName
       };
 
-      const SpotImages = [];
-      const images = await Image.findAll({
-        where: {
-          imageableId: theSpot.id,
-          imageableType: 'spot'
-        }
-      });
+      // const SpotImages = [];
+      // const images = await SpotImage.findAll({
+      //   where: {
+      //     spotId: theSpot.id,
+      //   }
+      // });
 
-      for (const image of images) {
-        const anImage = {
-          id: image.id,
-          url: image.url,
-          preview: image.preview,
-        };
+      // for (const image of images) {
+      //   const anImage = {
+      //     id: image.id,
+      //     url: image.url,
+      //     preview: image.preview,
+      //   };
 
-        SpotImages.push(anImage);
-      };
+      //   SpotImages.push(anImage);
+      // };
 
-      let starSum = 0;
-      let reviewCount = 0;
+      // let starSum = 0;
+      // let reviewCount = 0;
 
-      const Reviews = await Review.findAll({
-        where: {
-          spotId: theSpot.id
-        }
-      });
+      // const Reviews = await Review.findAll({
+      //   where: {
+      //     spotId: theSpot.id
+      //   }
+      // });
 
-      for (const review of Reviews) {
-        starSum += review.starRating;
-        reviewCount++;
-      };
+      // for (const review of Reviews) {
+      //   starSum += review.starRating;
+      //   reviewCount++;
+      // };
 
-      const avgStarRating = starSum / reviewCount;
+      // const avgStarRating = starSum / reviewCount;
 
-      theSpot.set({
-        avgRating: avgStarRating,
-      });
+      // theSpot.set({
+      //   avgRating: avgStarRating,
+      // });
 
       await theSpot.save();
 
@@ -362,9 +361,9 @@ router.get(
         name: theSpot.name,
         description: theSpot.description,
         price: theSpot.price,
-        numReviews: reviewCount,
-        avgStarRating: theSpot.avgRating,
-        SpotImages,
+        // numReviews: reviewCount,
+        // avgStarRating: theSpot.avgRating,
+        // SpotImages,
         Owner: ownerDetails
       }
       return res.json({
