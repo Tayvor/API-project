@@ -1,19 +1,91 @@
 .newSpotForm {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 380px;
+  padding: 5px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
+
+.cityStateInputs {
+  display: flex;
+  flex-direction: row;
+}
+
+.cityInput {
+  width: 200px;
+  margin-right: 10px;
+}
+
+.stateInput {
+  width: 154px;
+}
+
+.latLngInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.lngInput {
+  grid-column-start: 2;
+}
+
+.newSpotHr {
+  margin: 15px 0;
+  border: 1px dashed black;
+}
+
+.description {
+  height: 80px;
+  padding: 5px;
+}
+
+.imgInput {
+  margin: 5px 0;
 }
 
 h2 {
-  margin-bottom: 0;
+  margin: 10px 0;
 }
 
 h3 {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 p {
   margin: 0;
   margin-bottom: 10px;
+}
+
+.createSpotDiv {
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.createSpotBtn {
+  height: 35px;
+  width: 100px;
+  border: 1px solid gray;
+  border-radius: 20px;
+}
+
+.createSpotBtn:hover {
+  cursor: pointer;
+}
+
+.required {
+  color: red;
+}
+
+.priceDiv {
+  display: flex;
+  flex-direction: row;
+  color: black;
+  align-items: center;
 }
