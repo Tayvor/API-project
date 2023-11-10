@@ -1,17 +1,52 @@
+.openUserMenuBtn {
+  width: 65px;
+  height: 35px;
+  border: 1px solid gray;
+  border-radius: 20px;
+}
+
+.openUserMenuBtn:focus {
+  background-color: gainsboro;
+}
+
+.profile-dropdown {
+  position: absolute;
+}
+
 .userMenu {
   display: flex;
   flex-direction: column;
+  position: relative;
+  width: 130px;
+  background-color: white;
+  left: 15px;
+  top: 25px;
+  padding: 15px;
+  border: 1px solid gray;
+  border-radius: 15px;
 }
 
 .manageSpots {
-  margin: 5px 0;
+  justify-self: center;
 }
 
 .manageSpots:hover {
   cursor: pointer;
-  background-color: lightgray;
+  background-color: gainsboro;
 }
 
 .logoutBtn {
+  border: 1px solid gray;
+  border-radius: 10px;
+  height: 25px;
   margin-top: 5px;
+}
+
+.logoutBtn:hover {
+  cursor: pointer;
+  background-color: gainsboro;
+}
+
+.clickable:hover {
+  cursor: pointer;
 }

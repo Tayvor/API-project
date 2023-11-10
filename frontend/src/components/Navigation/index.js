@@ -21,11 +21,12 @@ export default function Navigation({ isLoaded }) {
 
       <div className="header-right">
         {sessionUser ?
-          <button onClick={viewNewSpotForm}>Create a New Spot</button>
+          <div onClick={viewNewSpotForm} className="newSpotDiv">Create a New Spot</div>
           : null
         }
         {isLoaded && <ProfileButton user={sessionUser} />}
       </div>
+
     </div>
   )
 };

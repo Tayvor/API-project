@@ -24,15 +24,21 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
+      <hr width='100%' />
       {isLoaded &&
         <Switch>
           <Route exact path='/' component={Spots} />
+
           <Route path='/spots/new'>
             <div className='createASpot'>
               <CreateASpot />
             </div>
           </Route>
-          <Route path='/spots/current' component={ManageSpots} />
+
+          <Route path='/spots/current'>
+            <ManageSpots />
+          </Route>
+
           <Route exact path='/spots/:spotId' component={SpotDetails} />
         </Switch>
       }

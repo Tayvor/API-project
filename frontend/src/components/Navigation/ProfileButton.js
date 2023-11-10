@@ -54,16 +54,24 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
+      <button onClick={openMenu} className="openUserMenuBtn clickable">
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
             <div className="userMenu">
-              <span>{user.firstName} {user.lastName}</span>
+              <span>{`Hello, ${user.firstName}`}</span>
               <span>{user.email}</span>
-              <span onClick={manageSpots} className="manageSpots">Manage Spots</span>
+              <hr width='100%' />
+
+              <span
+                onClick={manageSpots}
+                className="manageSpots"
+              >Manage Spots
+              </span>
+              <hr width='100%' />
+
               <button onClick={logout} className="logoutBtn">Log Out</button>
             </div>
           </>

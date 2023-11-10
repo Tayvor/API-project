@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,7 +20,7 @@ export default function ManageSpots() {
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 
-  const userSpots = Object.values(useSelector((state) => state.spots.userSpots));
+  // const userSpots = Object.values(useSelector((state) => state.spots.userSpots));
   // if (userSpots) console.log(userSpots);
 
   return (
