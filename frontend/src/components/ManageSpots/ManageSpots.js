@@ -13,23 +13,17 @@ export default function ManageSpots() {
 
   useEffect(() => {
     dispatch(spotActions.getSpotsByCurrUser())
-      // .catch(async (data) => {
-      //   const problem = await data.json();
-      //   console.log(problem)
-      // })
+      .catch(async (problem) => {
+        console.log(problem, '<=== PROBLEM ===')
+      })
       .then(() => setIsLoaded(true))
   }, [dispatch]);
-
-  // const userSpots = Object.values(useSelector((state) => state.spots.userSpots));
-  // if (userSpots) console.log(userSpots);
 
   return (
     <>
       <h2>Manage Your Spots</h2>
-      <button>Create a New Spot</button>
+      {/* <button>Create a New Spot</button> */}
       {isLoaded && (
-
-
         <div>
           {
 

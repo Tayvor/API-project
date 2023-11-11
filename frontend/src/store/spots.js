@@ -48,8 +48,9 @@ export const getSpotsByCurrUser = () => async (dispatch) => {
   if (res.ok) {
     const data = await res.json()
     dispatch(getSpotsByUser(data));
-    return res;
+    return data;
   }
+  return res;
 }
 
 // Create A Spot
@@ -72,9 +73,9 @@ export const createASpot = (newSpotInfo) => async (dispatch) => {
       'Content-Type': 'application/json'
     }
   });
-  // const data = await res.json();
+  const data = await res.json();
   // dispatch(getSpots(data.Spots));
-  return res;
+  return data;
 }
 
 const spotReducer = (state = {}, action) => {
@@ -92,7 +93,9 @@ const spotReducer = (state = {}, action) => {
 
     case GET_SPOT_BY_USER:
       newState = { ...state };
-      newState.userSpots = { ...action.payload }
+      newState.userSpots = {};
+      const currUserSpots = [...action.payload.Spots];
+      currUserSpots.map((spot) => newState.userSpots[spot.id] = spot)
       return newState;
 
     default:

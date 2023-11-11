@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as spotActions from '../../store/spots';
 
@@ -46,10 +46,9 @@ export default function CreateASpot() {
     } else {
       handleSubmit();
     }
-  }
+  };
 
   const handleSubmit = () => {
-
     const newSpotInfo = {
       address: streetAddress,
       city: city,
@@ -62,23 +61,15 @@ export default function CreateASpot() {
       price: Number(price),
     }
 
-    console.log(newSpotInfo, '<=== New Spot Info ===')
-
     return dispatch(spotActions.createASpot(newSpotInfo))
-      .catch(async (data) => {
-        const problem = await data.json();
+      .catch(async (problem) => {
         console.log(problem, '<=== Problem ===');
       })
-      .then(history.push('/'))
-  }
-
-  // useEffect(() => {
-  //   if (Object.keys(errors).length) {
-  //     setDisable(true);
-  //   } else {
-  //     setDisable(false);
-  //   }
-  // }, [errors])
+      .then((spot) => {
+        const { id } = spot;
+        history.push(`/spots/${id}`)
+      })
+  };
 
   return (
     <form className="newSpotForm">
@@ -179,7 +170,6 @@ export default function CreateASpot() {
           <input
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-          // type="number"
           ></input>
         </div>
       </label>
