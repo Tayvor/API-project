@@ -54,11 +54,26 @@ export const getSpotsByCurrUser = () => async (dispatch) => {
 
 // Create A Spot
 export const createASpot = (newSpotInfo) => async (dispatch) => {
+  const { address, city, country, state, lat, lng, name, description, price } = newSpotInfo;
   const res = await csrfFetch('/api/spots', {
     method: 'POST',
-    body: JSON.stringify({ ...newSpotInfo }),
+    body: JSON.stringify({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    }),
+    Headers: {
+      'Content-Type': 'application/json'
+    }
   });
-
+  // const data = await res.json();
+  // dispatch(getSpots(data.Spots));
   return res;
 }
 

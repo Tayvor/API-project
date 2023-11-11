@@ -24,24 +24,10 @@ export default function CreateASpot() {
   const [imgUrl5, setImgUrl5] = useState('');
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const validate = (e) => {
     e.preventDefault();
-    // setCountry('');
-    // setStreetAddress('');
-    // setCity('');
-    // setState('');
-    // setLatitude(20);
-    // setLongitude(20);
-    // setDescription('');
-    // setTitle('');
-    // setPrice(0);
-    // setImgUrl1('');
-    // setImgUrl2('');
-    // setImgUrl3('');
-    // setImgUrl4('');
-    // setImgUrl5('');
-    // setErrors({});
     const errors = {};
+    setErrors({});
 
     if (!country) errors.country = 'is required!';
     if (!streetAddress) errors.streetAddress = 'is required!';
@@ -52,219 +38,217 @@ export default function CreateASpot() {
     if (!price) errors.price = 'is required!';
     if (!imgUrl1) errors.imgUrl1 = 'is required!';
 
-    if (Object.values(errors)) setErrors(errors);
+    setErrors(errors);
 
-    if (!Object.values(errors)) {
-      const newSpotInfo = {
-        address: streetAddress,
-        city: city,
-        country: country,
-        state: state,
-        lat: latitude,
-        lng: longitude,
-        name: title,
-        description: description,
-        price: Number(price),
-      }
-      console.log(newSpotInfo);
-
-      // return dispatch(spotActions.createASpot(newSpotInfo))
-      //   .catch(async (data) => {
-      //     const problem = await data.json();
-      //     console.log(problem);
-      //   })
-      //   .then(history.push('/'))
+    if (Object.keys(errors).length) {
+      console.log(errors, '<=== errors ===');
+      return errors;
+    } else {
+      handleSubmit();
     }
   }
 
+  const handleSubmit = () => {
+
+    const newSpotInfo = {
+      address: streetAddress,
+      city: city,
+      state: state,
+      country: country,
+      lat: Number(latitude),
+      lng: Number(longitude),
+      name: title,
+      description: description,
+      price: Number(price),
+    }
+
+    console.log(newSpotInfo, '<=== New Spot Info ===')
+
+    return dispatch(spotActions.createASpot(newSpotInfo))
+      .catch(async (data) => {
+        const problem = await data.json();
+        console.log(problem, '<=== Problem ===');
+      })
+      .then(history.push('/'))
+  }
+
   // useEffect(() => {
-  //   setCountry('');
-  //   setStreetAddress('');
-  //   setCity('');
-  //   setState('');
-  //   setLatitude(20);
-  //   setLongitude(20);
-  //   setDescription('');
-  //   setTitle('');
-  //   setPrice(0);
-  //   setImgUrl1('');
-  //   setImgUrl2('');
-  //   setImgUrl3('');
-  //   setImgUrl4('');
-  //   setImgUrl5('');
-  //   setErrors({});
+  //   if (Object.keys(errors).length) {
+  //     setDisable(true);
+  //   } else {
+  //     setDisable(false);
+  //   }
   // }, [errors])
 
   return (
-    <>
-      <form className="newSpotForm">
+    <form className="newSpotForm">
 
-        <h2>Create a new Spot</h2>
-        <h3>Where's your place located?</h3>
-        <p>Guests will only get your exact address once they booked a reservation.</p>
+      <h2>Create a new Spot</h2>
+      <h3>Where's your place located?</h3>
+      <p>Guests will only get your exact address once they booked a reservation.</p>
 
-        <label className={errors.country ? 'required' : ''}>
-          {errors.country ? `Country ${errors.country}` : 'Country'}
+      <label className={errors.country ? 'required' : ''}>
+        {errors.country ? `Country ${errors.country}` : 'Country'}
+        <input
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+        ></input>
+      </label>
+
+      <label className={errors.streetAddress ? 'required' : ''}>
+        {errors.streetAddress ? `Street Address ${errors.streetAddress}` : 'Street Adress'}
+        <input
+          value={streetAddress}
+          onChange={(e) => setStreetAddress(e.target.value)}
+        ></input>
+      </label>
+
+      <div className="cityStateInputs">
+        <label className={errors.city ? 'required' : ''}>
+          {errors.city ? `City ${errors.city}` : 'City'}
           <input
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            className="cityInput"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
           ></input>
         </label>
 
-        <label className={errors.streetAddress ? 'required' : ''}>
-          {errors.streetAddress ? `Street Address ${errors.streetAddress}` : 'Street Adress'}
+        <label className={errors.state ? 'required' : ''}>
+          {errors.required ? `State ${errors.state}` : 'State'}
           <input
-            value={streetAddress}
-            onChange={(e) => setStreetAddress(e.target.value)}
+            className="stateInput"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+          ></input>
+        </label>
+      </div>
+
+      <div className="latLngInputs">
+        <label>
+          Latitude
+          <input
+            className="latInput"
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
           ></input>
         </label>
 
-        <div className="cityStateInputs">
-          <label className={errors.city ? 'required' : ''}>
-            {errors.city ? `City ${errors.city}` : 'City'}
-            <input
-              className="cityInput"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            ></input>
-          </label>
+        <label>
+          Longitude
+          <input
+            className="lngInput"
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+          ></input>
+        </label>
+      </div>
 
-          <label className={errors.state ? 'required' : ''}>
-            {errors.required ? `State ${errors.state}` : 'State'}
-            <input
-              className="stateInput"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            ></input>
-          </label>
+      <hr width='100%' className="newSpotHr" />
+
+      <h3>Describe your place to guests</h3>
+      <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+      <label className={errors.description ? 'required' : ''}>
+        {errors.description ? `Description ${errors.description}` : ''}
+        <textarea
+          className="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
+      </label>
+
+      <hr width='100%' className="newSpotHr" />
+
+      <h3>Create a title for your spot</h3>
+      <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+      <label className={errors.title ? 'required' : ''}>
+        {errors.title ? `Title ${errors.title}` : ''}
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        ></input>
+      </label>
+
+      <hr width='100%' className="newSpotHr" />
+
+      <h3>Set a base price for your spot</h3>
+      <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+      <label className={errors.price ? 'required' : ''}>
+        {errors.price ? `Price ${errors.price}` : ''}
+        <div className="priceDiv">
+          $
+          <input
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          // type="number"
+          ></input>
         </div>
+      </label>
 
-        <div className="latLngInputs">
-          <label>
-            Latitude
-            <input
-              className="latInput"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-            ></input>
-          </label>
+      <hr width='100%' className="newSpotHr" />
 
-          <label>
-            Longitude
-            <input
-              className="lngInput"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
-            ></input>
-          </label>
+      <h3>Liven up your spot with photos</h3>
+      <p>Submit a link to at least one photo to publish your spot.</p>
+      {errors.imgUrl1 ?
+        <div className={errors.imgUrl1 ? 'required' : ''}>
+          {`Preview image ${errors.imgUrl1}`}
         </div>
+        : ''
+      }
+      <label>
+        <input
+          className="imgInput"
+          value={imgUrl1}
+          onChange={(e) => setImgUrl1(e.target.value)}
+        ></input>
+      </label>
 
-        <hr width='100%' className="newSpotHr" />
+      <label>
+        <input
+          className="imgInput"
+          value={imgUrl2}
+          onChange={(e) => setImgUrl2(e.target.value)}
+          disabled={imgUrl1 ? false : true}
+        ></input>
+      </label>
 
-        <h3>Describe your place to guests</h3>
-        <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
-        <label className={errors.description ? 'required' : ''}>
-          {errors.description ? `Description ${errors.description}` : ''}
-          <textarea
-            className="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </label>
+      <label>
+        <input
+          className="imgInput"
+          value={imgUrl3}
+          onChange={(e) => setImgUrl3(e.target.value)}
+          disabled={imgUrl2 ? false : true}
+        ></input>
+      </label>
 
-        <hr width='100%' className="newSpotHr" />
+      <label>
+        <input
+          className="imgInput"
+          value={imgUrl4}
+          onChange={(e) => setImgUrl4(e.target.value)}
+          disabled={imgUrl3 ? false : true}
+        ></input>
+      </label>
 
-        <h3>Create a title for your spot</h3>
-        <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
-        <label className={errors.title ? 'required' : ''}>
-          {errors.title ? `Title ${errors.title}` : ''}
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          ></input>
-        </label>
+      <label>
+        <input
+          className="imgInput"
+          value={imgUrl5}
+          onChange={(e) => setImgUrl5(e.target.value)}
+          disabled={imgUrl4 ? false : true}
+        ></input>
+      </label>
 
-        <hr width='100%' className="newSpotHr" />
+      <hr width='100%' className="newSpotHr" />
 
-        <h3>Set a base price for your spot</h3>
-        <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-        <label className={errors.price ? 'required' : ''}>
-          {errors.price ? `Price ${errors.price}` : ''}
-          <div className="priceDiv">
-            $
-            <input
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              type="number"
-            ></input>
-          </div>
-        </label>
-
-        <hr width='100%' className="newSpotHr" />
-
-        <h3>Liven up your spot with photos</h3>
-        <p>Submit a link to at least one photo to publish your spot.</p>
-        {errors.imgUrl1 ?
-          <div className={errors.imgUrl1 ? 'required' : ''}>
-            {`Preview image ${errors.imgUrl1}`}
-          </div>
-          : ''}
-        <label>
-          <input
-            className="imgInput"
-            value={imgUrl1}
-            onChange={(e) => setImgUrl1(e.target.value)}
-          ></input>
-        </label>
-
-        <label>
-          <input
-            className="imgInput"
-            value={imgUrl2}
-            onChange={(e) => setImgUrl2(e.target.value)}
-            disabled={imgUrl1 ? false : true}
-          ></input>
-        </label>
-
-        <label>
-          <input
-            className="imgInput"
-            value={imgUrl3}
-            onChange={(e) => setImgUrl3(e.target.value)}
-            disabled={imgUrl2 ? false : true}
-          ></input>
-        </label>
-
-        <label>
-          <input
-            className="imgInput"
-            value={imgUrl4}
-            onChange={(e) => setImgUrl4(e.target.value)}
-            disabled={imgUrl3 ? false : true}
-          ></input>
-        </label>
-
-        <label>
-          <input
-            className="imgInput"
-            value={imgUrl5}
-            onChange={(e) => setImgUrl5(e.target.value)}
-            disabled={imgUrl4 ? false : true}
-          ></input>
-        </label>
-
-        <hr width='100%' className="newSpotHr" />
-
-        <div className="createSpotDiv">
-          <button
-            className="createSpotBtn"
-            disabled={false}
-            type="submit"
-            onClick={handleSubmit}
-          >Create Spot
-          </button>
-        </div>
-      </form>
-    </>
+      <div className="createSpotDiv">
+        <button
+          className="createSpotBtn"
+          // disabled={disable}
+          type="submit"
+          onClick={validate}
+        >Create Spot
+        </button>
+      </div>
+    </form>
   )
 }
