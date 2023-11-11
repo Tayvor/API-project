@@ -18,6 +18,7 @@ export default function Spots() {
       //   const problem = await data.json();
       //   console.log(problem)
       // })
+      // .then(dispatch(spotActions.getSpotsByCurrUser()))
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 

@@ -39,8 +39,9 @@ export const getSpotById = (id) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json()
     dispatch(getASpot(data));
-    return res;
+    return data;
   }
+  return res;
 }
 
 export const getSpotsByCurrUser = () => async (dispatch) => {
@@ -75,6 +76,31 @@ export const createASpot = (newSpotInfo) => async (dispatch) => {
   });
   const data = await res.json();
   // dispatch(getSpots(data.Spots));
+  return data;
+}
+
+// Update a Spot
+export const updateASpot = (updatedSpotInfo) => async (dispatch) => {
+  const { spotId, address, city, country, state, lat, lng, name, description, price } = updatedSpotInfo;
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    }),
+    Headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  const data = await res.json();
+  // getAllSpots();
   return data;
 }
 

@@ -1,0 +1,25 @@
+.userSpots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 20px;
+}
+
+.userSpot {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  justify-self: center;
+}
+
+.userSpot:hover {
+  cursor: pointer;
+}
+
+/* .updateDeleteDiv {
+  display: flex;
+  flex-direction: row;
+} */
+
+.editSpotBtn:hover {
+  cursor: pointer;
+}

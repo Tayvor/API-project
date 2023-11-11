@@ -12,6 +12,7 @@ import CreateASpot from './components/CreateASpot';
 import './App.css'
 import SpotDetails from './components/SpotDetails/SpotDetails';
 import ManageSpots from './components/ManageSpots/ManageSpots';
+import UpdateSpot from './components/UpdateSpot/UpdateSpot'
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +40,14 @@ function App() {
             <ManageSpots />
           </Route>
 
+          <Route path='/spots/:spotId/edit'>
+            <div className='createASpot'>
+              <UpdateSpot />
+            </div>
+          </Route>
+
           <Route exact path='/spots/:spotId' component={SpotDetails} />
+
         </Switch>
       }
     </>
