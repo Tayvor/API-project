@@ -122,31 +122,30 @@ export const deleteSpot = (spotId) => async (dispatch) => {
   return res;
 }
 
-const spotReducer = (state = {}, action) => {
+const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {} }, action) => {
   let newState = {};
   switch (action.type) {
     case GET_SPOTS:
+      newState = { ...state };
       const spots = [...action.spots];
-      spots.map((spot) => newState[spot.id] = spot);
+      spots.map((spot) => newState.spots[spot.id] = spot);
       return newState;
 
     case GET_SPOT_BY_ID:
       newState = { ...state };
-      newState.spotDetails = { ...action.spotDetails }
+      newState.currSpot = { ...action.spotDetails }
       return newState;
 
     case GET_SPOT_BY_USER:
       newState = { ...state };
-      newState.userSpots = {};
       const currUserSpots = [...action.payload.Spots];
       currUserSpots.map((spot) => newState.userSpots[spot.id] = spot)
       return newState;
 
     case DELETE_SPOT:
-      newState = { ...state };
-      delete newState.userSpots[action.spotId];
-      // delete newState.spots[action.spotId];
-      return newState;
+      const userSpots = { ...state.userSpots };
+      delete userSpots[action.spotId];
+      return { ...state, userSpots };
 
     default:
       return state;

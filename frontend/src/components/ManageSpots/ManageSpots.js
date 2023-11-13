@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import blueHouse from './blueHouse.avif'
 import './ManageSpots.css'
@@ -15,8 +15,10 @@ export default function ManageSpots() {
   const history = useHistory();
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [userSpots, setUserSpots] = useState([]);
+  // const [userSpots, setUserSpots] = useState([]);
   const [editSpotUrl, setEditSpotUrl] = useState('');
+
+  const currUserSpots = useSelector((state) => state.spots.userSpots);
 
   useEffect(() => {
     dispatch(spotActions.getSpotsByCurrUser())
@@ -24,7 +26,7 @@ export default function ManageSpots() {
         console.log(problem, '<=== PROBLEM ===');
         return problem;
       })
-      .then((data) => setUserSpots(data.Spots))
+      // .then((data) => setUserSpots(data.Spots))
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 
@@ -38,9 +40,9 @@ export default function ManageSpots() {
     <>
       <h2>Manage Your Spots</h2>
       <button>Create a New Spot</button>
-      {isLoaded && (
+      {isLoaded && currUserSpots && (
         <div className='userSpots'>
-          {userSpots.map((spot) =>
+          {Object.values(currUserSpots).map((spot) =>
             <div
               key={spot.id}
               className='userSpot'
@@ -49,7 +51,6 @@ export default function ManageSpots() {
               {`${spot.city}, ${spot.state}`}
               <span>{`$${spot.price} night`}</span>
               <div
-                spotId={spot.id}
                 className='updateDeleteDiv'
               >
                 <button

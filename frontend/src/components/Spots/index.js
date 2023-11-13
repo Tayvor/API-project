@@ -22,7 +22,7 @@ export default function Spots() {
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 
-  const allSpots = Object.values(useSelector((state) => state.spots));
+  const allSpots = Object.values(useSelector((state) => state.spots.spots));
 
   return (
     <>
