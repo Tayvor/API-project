@@ -7,6 +7,9 @@ import './ManageSpots.css'
 
 import * as spotActions from '../../store/spots';
 
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
+
 export default function ManageSpots() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,19 +44,24 @@ export default function ManageSpots() {
             <div
               key={spot.id}
               className='userSpot'
-            // onClick={(e) => history.push(`/spots/${spot.id}`)}
             >
               <img src={blueHouse} style={{ height: 260, width: 270, borderRadius: 15 }}></img>
               {`${spot.city}, ${spot.state}`}
               <span>{`$${spot.price} night`}</span>
-              <span>{spot.id}</span>
-              <div className='updateDeleteDiv'>
+              <div
+                spotId={spot.id}
+                className='updateDeleteDiv'
+              >
                 <button
                   className='editSpotBtn'
                   onClick={(e) => setEditSpotUrl(`/spots/${spot.id}/edit`)}
                 >Update
                 </button>
-                <button>Delete</button>
+
+                <OpenModalMenuItem
+                  itemText="Delete"
+                  modalComponent={<DeleteSpotModal spotId={spot.id} />}
+                />
               </div>
             </div>
           )}

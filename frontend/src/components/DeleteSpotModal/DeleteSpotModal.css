@@ -1,0 +1,4 @@
+.deleteSpotBtns {
+  display: flex;
+  flex-direction: column;
+}

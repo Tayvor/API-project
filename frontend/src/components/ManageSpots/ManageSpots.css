@@ -15,11 +15,15 @@
   cursor: pointer;
 }
 
-/* .updateDeleteDiv {
-  display: flex;
-  flex-direction: row;
-} */
+.updateDeleteDiv {
+  margin: 10px 0;
+}
 
-.editSpotBtn:hover {
+.editSpotBtn {
+  margin-right: 10px;
+}
+
+.editSpotBtn:hover,
+.deleteSpotBtn:hover {
   cursor: pointer;
 }

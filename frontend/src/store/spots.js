@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf';
 const GET_SPOTS = 'GET_SPOTS';
 const GET_SPOT_BY_ID = 'GET_SPOT_BY_ID';
 const GET_SPOT_BY_USER = 'GET_SPOT_BY_USER';
+const DELETE_SPOT = 'DELETE_SPOT'
 
 const getSpots = (allSpots) => {
   return {
@@ -25,6 +26,13 @@ const getSpotsByUser = (currUserSpots) => {
   }
 }
 
+const deleteSpotById = (spotId) => {
+  return {
+    type: DELETE_SPOT,
+    spotId: spotId
+  }
+}
+
 // Get All Spots
 export const getAllSpots = () => async (dispatch) => {
   const res = await csrfFetch('/api/spots');
@@ -44,6 +52,7 @@ export const getSpotById = (id) => async (dispatch) => {
   return res;
 }
 
+// Get Spots Belonging to Curr User
 export const getSpotsByCurrUser = () => async (dispatch) => {
   const res = await csrfFetch('/api/spots/current');
   if (res.ok) {
@@ -104,6 +113,15 @@ export const updateASpot = (updatedSpotInfo) => async (dispatch) => {
   return data;
 }
 
+// Delete a Spot
+export const deleteSpot = (spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'DELETE'
+  })
+    .then(dispatch(deleteSpotById(spotId)));
+  return res;
+}
+
 const spotReducer = (state = {}, action) => {
   let newState = {};
   switch (action.type) {
@@ -122,6 +140,12 @@ const spotReducer = (state = {}, action) => {
       newState.userSpots = {};
       const currUserSpots = [...action.payload.Spots];
       currUserSpots.map((spot) => newState.userSpots[spot.id] = spot)
+      return newState;
+
+    case DELETE_SPOT:
+      newState = { ...state };
+      delete newState.userSpots[action.spotId];
+      // delete newState.spots[action.spotId];
       return newState;
 
     default:

@@ -111,7 +111,7 @@ export default function CreateASpot() {
           </label>
 
           <label className={errors.streetAddress ? 'required' : ''}>
-            {errors.streetAddress ? `Street Address ${errors.streetAddress}` : 'Street Adress'}
+            {errors.streetAddress ? `Street Address ${errors.streetAddress}` : 'Street Address'}
             <input
               value={streetAddress}
               onChange={(e) => setStreetAddress(e.target.value)}
