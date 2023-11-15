@@ -15,7 +15,6 @@ export default function ManageSpots() {
   const history = useHistory();
 
   const [isLoaded, setIsLoaded] = useState(false);
-  // const [userSpots, setUserSpots] = useState([]);
   const [editSpotUrl, setEditSpotUrl] = useState('');
 
   const currUserSpots = useSelector((state) => state.spots.userSpots);
@@ -26,7 +25,6 @@ export default function ManageSpots() {
         console.log(problem, '<=== PROBLEM ===');
         return problem;
       })
-      // .then((data) => setUserSpots(data.Spots))
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 

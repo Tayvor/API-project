@@ -1,5 +1,4 @@
 import { useDispatch } from 'react-redux';
-// import { csrfFetch } from "../../store/csrf";
 
 import './DeleteSpotModal.css';
 import * as spotActions from '../../store/spots';

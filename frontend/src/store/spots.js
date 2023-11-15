@@ -3,7 +3,8 @@ import { csrfFetch } from './csrf';
 const GET_SPOTS = 'GET_SPOTS';
 const GET_SPOT_BY_ID = 'GET_SPOT_BY_ID';
 const GET_SPOT_BY_USER = 'GET_SPOT_BY_USER';
-const DELETE_SPOT = 'DELETE_SPOT'
+const DELETE_SPOT = 'DELETE_SPOT';
+const GET_REVIEWS = 'GET_REVIEWS';
 
 const getSpots = (allSpots) => {
   return {
@@ -30,6 +31,13 @@ const deleteSpotById = (spotId) => {
   return {
     type: DELETE_SPOT,
     spotId: spotId
+  }
+}
+
+const getSpotReviews = (reviews) => {
+  return {
+    type: GET_REVIEWS,
+    reviews: reviews
   }
 }
 
@@ -119,6 +127,18 @@ export const deleteSpot = (spotId) => async (dispatch) => {
     method: 'DELETE'
   })
     .then(dispatch(deleteSpotById(spotId)));
+  return res;
+}
+
+// Get Reviews by Spot Id
+export const getReviewsBySpotId = (spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  if (res.ok) {
+    const data = await res.json();
+    console.log(data, '<=== Data ===')
+    // dispatch(getSpotReviews(data));
+    return data;
+  }
   return res;
 }
 

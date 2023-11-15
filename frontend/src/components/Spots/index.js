@@ -18,7 +18,6 @@ export default function Spots() {
       //   const problem = await data.json();
       //   console.log(problem)
       // })
-      // .then(dispatch(spotActions.getSpotsByCurrUser()))
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 
@@ -36,8 +35,13 @@ export default function Spots() {
                 className="spot"
                 onClick={(e) => history.push(`/spots/${spot.id}`)}
               >
-                <img src={blueHouse} style={{ height: 260, width: 270, borderRadius: 15 }}></img>
-                {`${spot.city}, ${spot.state}`}
+                <img title={`${spot.name}`} src={blueHouse}
+                  style={{ height: 260, width: 270, borderRadius: 15 }}
+                ></img>
+                <div className="cityStateStar">
+                  <div>{`${spot.city}, ${spot.state}`}</div>
+                  <i className="fas fa-star">{` ${spot.avgRating}`}</i>
+                </div>
                 <span>{`$${spot.price} night`}</span>
               </div>
             )}
