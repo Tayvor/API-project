@@ -135,14 +135,14 @@ export const getReviewsBySpotId = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
   if (res.ok) {
     const data = await res.json();
-    console.log(data, '<=== Data ===')
-    // dispatch(getSpotReviews(data));
+    // console.log(data, '<=== Data ===');
+    dispatch(getSpotReviews(data.Reviews));
     return data;
   }
-  return res;
+  return res.json();
 }
 
-const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {} }, action) => {
+const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {}, currSpotReviews: {} }, action) => {
   let newState = {};
   switch (action.type) {
     case GET_SPOTS:
@@ -166,6 +166,13 @@ const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {} }, action)
       const userSpots = { ...state.userSpots };
       delete userSpots[action.spotId];
       return { ...state, userSpots };
+
+    case GET_REVIEWS:
+      newState = { ...state };
+      newState.currSpotReviews = {};
+      const theReviews = [...action.reviews];
+      theReviews.map((review) => newState.currSpotReviews[review.id] = review)
+      return newState;
 
     default:
       return state;

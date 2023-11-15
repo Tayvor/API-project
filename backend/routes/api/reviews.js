@@ -152,21 +152,21 @@ router.get(
           lastName: reviewAuthor.lastName
         };
 
-        const reviewImages = await Image.findAll({
-          where: {
-            imageableId: review.id,
-            imageableType: 'review'
-          }
-        });
+        // const reviewImages = await Image.findAll({
+        //   where: {
+        //     imageableId: review.id,
+        //     imageableType: 'review'
+        //   }
+        // });
 
-        for (const reviewImg of reviewImages) {
-          const revImg = {
-            id: reviewImg.id,
-            url: reviewImg.url
-          };
+        // for (const reviewImg of reviewImages) {
+        //   const revImg = {
+        //     id: reviewImg.id,
+        //     url: reviewImg.url
+        //   };
 
-          ReviewImages.push(revImg);
-        };
+        //   ReviewImages.push(revImg);
+        // };
 
         const formattedReview = {
           id: review.id,
@@ -177,7 +177,7 @@ router.get(
           createdAt: review.createdAt,
           updatedAt: review.updatedAt,
           User: { ...userDetails },
-          ReviewImages,
+          // ReviewImages,
         };
 
         reviewData.push(formattedReview);

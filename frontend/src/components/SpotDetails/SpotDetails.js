@@ -13,14 +13,38 @@ export default function SpotDetails() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [starAvg, setStarAvg] = useState(0);
+  const [numReviews, setNumReviews] = useState(0);
 
   useEffect(() => {
     dispatch(spotActions.getSpotById(spotId))
+      .then(() => dispatch(spotActions.getReviewsBySpotId(spotId)))
       .then(() => setIsLoaded(true));
   }, [dispatch])
 
   const theSpot = useSelector((state) => state.spots.currSpot)
-  console.log(theSpot, '<=== the Spot ===');
+  const theReviews = useSelector((state) => state.spots.currSpotReviews);
+  // console.log(theReviews, '<=== Reviews ===');
+
+  useEffect(() => {
+    setNumReviews(0);
+    setStarAvg(0);
+
+    if (theReviews) {
+      let reviewCount = 0;
+      let starSum = 0;
+
+      Object.values(theReviews).map((review) => {
+        reviewCount += 1;
+        starSum += review.stars;
+      });
+
+      const avgStars = (starSum / reviewCount);
+      setStarAvg(avgStars);
+      setNumReviews(reviewCount);
+    }
+  }, [theReviews])
+
 
   return (
     <>
@@ -44,8 +68,8 @@ export default function SpotDetails() {
             <div className="spotDetailsReserveBox">
               <div className="reserveBoxTop">{theSpot ? `$${theSpot.price} night` : ''}
                 <div>
-                  <i className="fas fa-star">{` ${theSpot.avgRating}`}</i>
-                  *icon #.# - # reviews
+                  <i className="fas fa-star">{` ${starAvg}`}</i>
+                  {numReviews > 1 ? ` - ${numReviews} reviews` : ` - ${numReviews} review`}
                 </div>
               </div>
               <button className="reserveBtn">Reserve</button>
@@ -53,8 +77,12 @@ export default function SpotDetails() {
           </section>
 
           <section className="spotDetailsReviews">
-            <div>*icon #.# - # reviews</div>
+            <div>
+              <i className="fas fa-star">{` ${starAvg}`}</i>
+              {numReviews > 1 ? ` - ${numReviews} reviews` : ` - ${numReviews} review`}
+            </div>
             <button className="postReviewBtn">Post Your Review</button>
+
             <div className="spotReviews">
               <div>firstName</div>
               <div>Month / Year</div>
