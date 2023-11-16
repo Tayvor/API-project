@@ -17,7 +17,9 @@ export default function Navigation({ isLoaded }) {
 
   return (
     <div className="header">
-      <NavLink exact to='/'>Home</NavLink>
+      <NavLink exact to='/'>
+        <i className="fab fa-airbnb">AirBnB</i>
+      </NavLink>
 
       <div className="header-right">
         {sessionUser ?

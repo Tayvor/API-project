@@ -1,21 +1,15 @@
 .spotDetails {
   max-width: 1000px;
-  border: 3px solid black;
-  padding: 1px;
-}
-
-.spotDetailsHeader {
-  border: 2px solid gray;
+  margin-bottom: 50px;
 }
 
 .spotDetailsFooter {
-  border: 2px solid black;
   display: flex;
   justify-content: space-between;
 }
 
 .spotDetailsReserveBox {
-  border: 2px solid lightblue;
+  border: 2px solid gray;
   border-radius: 15px;
   padding: 15px;
   display: flex;
@@ -39,12 +33,11 @@
 }
 
 .spotDetailsReviews {
-  border: 2px solid red;
   margin-top: 10px;
 }
 
-.spotReviews {
-  border: 2px solid lightblue;
+.review {
+  margin-top: 5px;
 }
 
 .postReviewBtn {

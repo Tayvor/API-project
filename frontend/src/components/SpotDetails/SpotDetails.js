@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import * as spotActions from '../../store/spots';
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 
 import BlueHouse from './blueHouse.avif';
 import './SpotDetails.css';
+import CreateReview from "../CreateReview/CreateReview";
 
 
 
@@ -15,6 +17,7 @@ export default function SpotDetails() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [starAvg, setStarAvg] = useState(0);
   const [numReviews, setNumReviews] = useState(0);
+  const [currUserReview, setCurrUserReview] = useState(false);
 
   useEffect(() => {
     dispatch(spotActions.getSpotById(spotId))
@@ -24,11 +27,12 @@ export default function SpotDetails() {
 
   const theSpot = useSelector((state) => state.spots.currSpot)
   const theReviews = useSelector((state) => state.spots.currSpotReviews);
-  // console.log(theReviews, '<=== Reviews ===');
+  const currUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     setNumReviews(0);
     setStarAvg(0);
+    setCurrUserReview(false);
 
     if (theReviews) {
       let reviewCount = 0;
@@ -37,6 +41,14 @@ export default function SpotDetails() {
       Object.values(theReviews).map((review) => {
         reviewCount += 1;
         starSum += review.stars;
+
+        if (currUser) {
+          if (theSpot.ownerId === currUser.id ||
+            review.User.id === currUser.id
+          ) {
+            setCurrUserReview(true)
+          }
+        }
       });
 
       const avgStars = (starSum / reviewCount);
@@ -68,28 +80,48 @@ export default function SpotDetails() {
             <div className="spotDetailsReserveBox">
               <div className="reserveBoxTop">{theSpot ? `$${theSpot.price} night` : ''}
                 <div>
-                  <i className="fas fa-star">{` ${starAvg}`}</i>
-                  {numReviews > 1 ? ` - ${numReviews} reviews` : ` - ${numReviews} review`}
+                  <i className="fas fa-star">{starAvg ? ` ${starAvg}` : ' New'}</i>
+                  {numReviews > 1 ? ` - ${numReviews} reviews` : ''}
+                  {numReviews === 1 ? ` - ${numReviews} review` : ''}
                 </div>
               </div>
-              <button className="reserveBtn">Reserve</button>
+              <button
+                onClick={() => window.alert('Feature Coming Soon...')}
+                className="reserveBtn"
+              >Reserve</button>
             </div>
           </section>
 
           <section className="spotDetailsReviews">
             <div>
-              <i className="fas fa-star">{` ${starAvg}`}</i>
-              {numReviews > 1 ? ` - ${numReviews} reviews` : ` - ${numReviews} review`}
+              <i className="fas fa-star">{starAvg ? ` ${starAvg}` : ' New'}</i>
+              {numReviews > 1 ? ` - ${numReviews} reviews` : ''}
+              {numReviews === 1 ? ` - ${numReviews} review` : ''}
             </div>
-            <button className="postReviewBtn">Post Your Review</button>
+
+            {currUser && !currUserReview && currUser.id !== theSpot.ownerId ?
+              <OpenModalMenuItem
+                itemText='Post Your Review'
+                modalComponent={<CreateReview spotId={theSpot.id} />} />
+              : ''
+            }
+            {currUser && numReviews === 0 && currUser.id !== theSpot.ownerId ? <div>Be the first to post a review!</div> : ''}
 
             <div className="spotReviews">
-              <div>firstName</div>
-              <div>Month / Year</div>
-              <div>the review ...</div>
+              {Object.values(theReviews).map((review) =>
+                <div
+                  key={review.id}
+                  className="review"
+                >
+                  <hr width='100%' />
+                  <div>{review.User.firstName}</div>
+                  <div>{`${review.updatedAt.split('-')[1]}, ${review.updatedAt.split('-')[0]}`}</div>
+                  <div>{review.review}</div>
+                </div>
+              )}
             </div>
-          </section>
-        </div>
+          </section >
+        </div >
       }
     </>
   )

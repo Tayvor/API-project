@@ -14,10 +14,10 @@ export default function Spots() {
 
   useEffect(() => {
     dispatch(spotActions.getAllSpots())
-      // .catch(async (data) => {
-      //   const problem = await data.json();
-      //   console.log(problem)
-      // })
+      .catch(async (data) => {
+        const problem = await data.json();
+        return problem;
+      })
       .then(() => setIsLoaded(true))
   }, [dispatch]);
 
@@ -40,7 +40,10 @@ export default function Spots() {
                 ></img>
                 <div className="cityStateStar">
                   <div>{`${spot.city}, ${spot.state}`}</div>
-                  <i className="fas fa-star">{` ${spot.avgRating}`}</i>
+                  <i className="fas fa-star">
+                    {spot.avgRating ?
+                      ` ${spot.avgRating}` : ' New'}
+                  </i>
                 </div>
                 <span>{`$${spot.price} night`}</span>
               </div>

@@ -141,7 +141,7 @@ router.get(
     });
 
     const reviewData = [];
-    const ReviewImages = [];
+    // const ReviewImages = [];
 
     if (spotReviews) {
       for (const review of spotReviews) {

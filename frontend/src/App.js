@@ -46,8 +46,11 @@ function App() {
             </div>
           </Route>
 
-          <Route exact path='/spots/:spotId' component={SpotDetails} />
-
+          <Route exact path='/spots/:spotId'>
+            <div className='currSpot'>
+              <SpotDetails />
+            </div>
+          </Route>
         </Switch>
       }
     </>
