@@ -249,13 +249,11 @@ router.get(
       });
 
       for (const review of Reviews) {
-        // console.log(review, '<=== ***** ===')
         starSum += review.starRating;
         reviewCount++;
       };
 
       const avgStarRating = starSum / reviewCount;
-      // console.log(avgStarRating.length, '<=== ***** ===')
 
       spot.set({
         avgRating: avgStarRating,
