@@ -25,6 +25,8 @@ export default function LoginFormModal() {
     setErrors({});
 
     return dispatch(sessionActions.loginUser({ credential, password }))
+      .then(() => closeModal())
+      .then(history.push('/'))
       .catch(async (res) => {
         const data = await res.json();
         setErrors({ ...data })
@@ -32,10 +34,7 @@ export default function LoginFormModal() {
         if (data && data.errors) {
           setErrors(data.errors);
         }
-      })
-      .then(console.log(errors, '<=== Errors ==='))
-      .then(closeModal)
-      .then(history.push('/'))
+      });
   };
 
   const demoLogin = (e) => {
@@ -45,6 +44,7 @@ export default function LoginFormModal() {
   }
 
   useEffect(() => {
+    setDisabled(true)
     if (credential.length > 3 &&
       password.length > 5) {
       setDisabled(false)
