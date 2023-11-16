@@ -18,7 +18,7 @@ export default function Navigation({ isLoaded }) {
   return (
     <div className="header">
       <NavLink exact to='/'>
-        <i className="fab fa-airbnb">AirBnB</i>
+        <i className="fab fa-airbnb">{` R a i r - B n B`}</i>
       </NavLink>
 
       <div className="header-right">

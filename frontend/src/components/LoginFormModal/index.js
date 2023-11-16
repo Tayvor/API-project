@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 
 import * as sessionActions from "../../store/session";
+import { csrfFetch } from "../../store/csrf";
 
 import './LoginForm.css'
 
@@ -15,16 +16,15 @@ export default function LoginFormModal() {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [disabled, setDisabled] = useState(true);
 
   const { closeModal } = useModal();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
     return dispatch(sessionActions.loginUser({ credential, password }))
-      .then(closeModal)
-      .then(history.push('/'))
       .catch(async (res) => {
         const data = await res.json();
         setErrors({ ...data })
@@ -32,7 +32,10 @@ export default function LoginFormModal() {
         if (data && data.errors) {
           setErrors(data.errors);
         }
-      });
+      })
+      .then(console.log(errors, '<=== Errors ==='))
+      .then(closeModal)
+      .then(history.push('/'))
   };
 
   const demoLogin = (e) => {
@@ -40,6 +43,13 @@ export default function LoginFormModal() {
     // todo
     // login as demo user, need to create demo user!
   }
+
+  useEffect(() => {
+    if (credential.length > 3 &&
+      password.length > 5) {
+      setDisabled(false)
+    }
+  }, [credential, password])
 
   return (
     <>
@@ -65,13 +75,13 @@ export default function LoginFormModal() {
           >
           </input>
         </label>
-        {errors && <p>{errors.message}</p>}
+        {errors.message && <p className="err">The provided credentials were invalid.</p>}
 
         <button
-          disabled={!credential || !password ? true : false}
+          disabled={disabled}
           className="loginBtn"
         >
-          Submit
+          Log In
         </button>
       </form>
 

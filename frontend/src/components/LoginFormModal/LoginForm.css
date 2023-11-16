@@ -1,6 +1,6 @@
-.login {
+/* .login {
   color: red;
-}
+} */
 
 .loginForm {
   border: 2px solid black;
@@ -21,4 +21,9 @@
 
 .demoLogin:hover {
   cursor: pointer;
+}
+
+.err {
+  margin-top: 5px;
+  color: red;
 }
