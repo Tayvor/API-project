@@ -42,7 +42,7 @@ export default function Spots() {
                   <div>{`${spot.city}, ${spot.state}`}</div>
                   <i className="fas fa-star">
                     {spot.avgRating ?
-                      ` ${spot.avgRating}` : ' New'}
+                      ` ${spot.avgRating.toFixed(1)}` : ' New'}
                   </i>
                 </div>
                 <span>{`$${spot.price} night`}</span>

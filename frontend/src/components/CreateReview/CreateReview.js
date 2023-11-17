@@ -32,7 +32,7 @@ export default function CreateReview({ spotId }) {
       <textarea
         className='reviewTextArea'
         onChange={(e) => setReviewText(e.target.value)}
-        placeholder='Please enter at least 10 characters.'
+        placeholder='Leave your review here...'
       ></textarea>
 
       <div className="stars">

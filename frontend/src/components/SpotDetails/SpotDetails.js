@@ -8,6 +8,7 @@ import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import BlueHouse from './blueHouse.avif';
 import './SpotDetails.css';
 import CreateReview from "../CreateReview/CreateReview";
+import DeleteReviewModal from "../DeleteReviewModal/DeleteReviewModal";
 
 
 
@@ -73,30 +74,32 @@ export default function SpotDetails() {
 
           <section className="spotDetailsFooter">
             <div>
-              <div>{theSpot ? `Hosted by ${theSpot.Owner.firstName} ${theSpot.Owner.lastName}` : ''}</div>
-              <div>{theSpot ? `${theSpot.description}` : ''}</div>
+              <h3>{theSpot ?
+                `Hosted by ${theSpot.Owner.firstName} ${theSpot.Owner.lastName}` : ''
+              }</h3>
+              <div className="spotDesc">{theSpot ? `${theSpot.description}` : ''}</div>
             </div>
 
             <div className="spotDetailsReserveBox">
               <div className="reserveBoxTop">{theSpot ? `$${theSpot.price} night` : ''}
                 <div>
-                  <i className="fas fa-star">{starAvg ? ` ${starAvg}` : ' New'}</i>
-                  {numReviews > 1 ? ` - ${numReviews} reviews` : ''}
-                  {numReviews === 1 ? ` - ${numReviews} review` : ''}
+                  <i className="fas fa-star">{starAvg ? ` ${starAvg.toFixed(1)}` : ' New'}</i>
+                  {numReviews > 1 ? ` · ${numReviews} reviews` : ''}
+                  {numReviews === 1 ? ` · ${numReviews} review` : ''}
                 </div>
               </div>
               <button
                 onClick={() => window.alert('Feature Coming Soon...')}
                 className="reserveBtn"
               >Reserve</button>
-            </div>
-          </section>
+            </div >
+          </section >
 
           <section className="spotDetailsReviews">
             <div>
-              <i className="fas fa-star">{starAvg ? ` ${starAvg}` : ' New'}</i>
-              {numReviews > 1 ? ` - ${numReviews} reviews` : ''}
-              {numReviews === 1 ? ` - ${numReviews} review` : ''}
+              <i className="fas fa-star">{starAvg ? ` ${starAvg.toFixed(1)}` : ' New'}</i>
+              {numReviews > 1 ? ` · ${numReviews} reviews` : ''}
+              {numReviews === 1 ? ` · ${numReviews} review` : ''}
             </div>
 
             {currUser && !currUserReview && currUser.id !== theSpot.ownerId ?
@@ -117,6 +120,11 @@ export default function SpotDetails() {
                   <div>{review.User.firstName}</div>
                   <div>{`${review.updatedAt.split('-')[1]}, ${review.updatedAt.split('-')[0]}`}</div>
                   <div>{review.review}</div>
+                  {currUser.id === review.userId ?
+                    <OpenModalMenuItem
+                      itemText='Delete'
+                      modalComponent={<DeleteReviewModal reviewId={review.id} />} />
+                    : ''}
                 </div>
               )}
             </div>

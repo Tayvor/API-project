@@ -16,7 +16,7 @@ export default function CreateASpot() {
   const [longitude, setLongitude] = useState(20);
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState();
   const [imgUrl1, setImgUrl1] = useState('');
   const [imgUrl2, setImgUrl2] = useState('');
   const [imgUrl3, setImgUrl3] = useState('');
@@ -33,6 +33,7 @@ export default function CreateASpot() {
     if (!streetAddress) errors.streetAddress = 'is required!';
     if (!city) errors.city = 'is required!';
     if (!state) errors.state = 'is required!';
+    if (description.length < 30) errors.description = 'must be at least 30 characters!'
     if (!description) errors.description = 'is required!';
     if (!title) errors.title = 'is required!';
     if (!price) errors.price = 'is required!';
@@ -74,7 +75,7 @@ export default function CreateASpot() {
   return (
     <form className="newSpotForm">
 
-      <h2>Create a new Spot</h2>
+      <h2>Create a New Spot</h2>
       <h3>Where's your place located?</h3>
       <p>Guests will only get your exact address once they booked a reservation.</p>
 
@@ -141,6 +142,7 @@ export default function CreateASpot() {
       <label className={errors.description ? 'required' : ''}>
         {errors.description ? `Description ${errors.description}` : ''}
         <textarea
+          placeholder="Please write at least 30 characters"
           className="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -154,6 +156,7 @@ export default function CreateASpot() {
       <label className={errors.title ? 'required' : ''}>
         {errors.title ? `Title ${errors.title}` : ''}
         <input
+          placeholder="Name of your spot"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         ></input>
@@ -168,6 +171,8 @@ export default function CreateASpot() {
         <div className="priceDiv">
           $
           <input
+            placeholder="Price per night (USD)"
+            type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           ></input>
@@ -186,6 +191,7 @@ export default function CreateASpot() {
       }
       <label>
         <input
+          placeholder="Preview Image URL"
           className="imgInput"
           value={imgUrl1}
           onChange={(e) => setImgUrl1(e.target.value)}
@@ -194,6 +200,7 @@ export default function CreateASpot() {
 
       <label>
         <input
+          placeholder="Image URL"
           className="imgInput"
           value={imgUrl2}
           onChange={(e) => setImgUrl2(e.target.value)}
@@ -203,6 +210,7 @@ export default function CreateASpot() {
 
       <label>
         <input
+          placeholder="Image URL"
           className="imgInput"
           value={imgUrl3}
           onChange={(e) => setImgUrl3(e.target.value)}
@@ -212,6 +220,7 @@ export default function CreateASpot() {
 
       <label>
         <input
+          placeholder="Image URL"
           className="imgInput"
           value={imgUrl4}
           onChange={(e) => setImgUrl4(e.target.value)}
@@ -221,6 +230,7 @@ export default function CreateASpot() {
 
       <label>
         <input
+          placeholder="Image URL"
           className="imgInput"
           value={imgUrl5}
           onChange={(e) => setImgUrl5(e.target.value)}

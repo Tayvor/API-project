@@ -8,6 +8,11 @@
   justify-content: space-between;
 }
 
+.spotDesc {
+  width: 300px;
+  word-wrap: break-word;
+}
+
 .spotDetailsReserveBox {
   border: 2px solid gray;
   border-radius: 15px;
@@ -15,6 +20,7 @@
   display: flex;
   flex-direction: column;
   width: 250px;
+  height: fit-content;
 }
 
 .reserveBoxTop {
