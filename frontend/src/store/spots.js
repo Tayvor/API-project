@@ -136,14 +136,14 @@ export const deleteSpot = (spotId) => async (dispatch) => {
 
 // Get Reviews by Spot Id
 export const getReviewsBySpotId = (spotId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  const res = await csrfFetch(`/api/spots/${spotId}/reviews`)
   if (res.ok) {
-    const data = await res.json();
-    // console.log(data, '<=== Data ===');
-    dispatch(getSpotReviews(data.Reviews));
-    return data;
+    const data = await res.json()
+    // console.log(data.Reviews, '<=== Data ===')
+    const reviews = await dispatch(getSpotReviews(data.Reviews))
+    return reviews;
   }
-  return res.json();
+  return res;
 }
 
 const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {}, currSpotReviews: {} }, action) => {

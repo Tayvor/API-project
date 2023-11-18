@@ -58,7 +58,6 @@ export default function SpotDetails() {
     }
   }, [theReviews])
 
-
   return (
     <>
       {isLoaded &&
@@ -111,7 +110,7 @@ export default function SpotDetails() {
             {currUser && numReviews === 0 && currUser.id !== theSpot.ownerId ? <div>Be the first to post a review!</div> : ''}
 
             <div className="spotReviews">
-              {Object.values(theReviews).map((review) =>
+              {Object.values(theReviews).sort((a, b) => a.id < b.id ? 1 : -1).map((review) =>
                 <div
                   key={review.id}
                   className="review"
