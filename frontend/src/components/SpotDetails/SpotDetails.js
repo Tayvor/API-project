@@ -62,14 +62,25 @@ export default function SpotDetails() {
     <>
       {isLoaded &&
         <div className="spotDetails">
-          <section className="spotDetailsHeader">
-            <h2>{theSpot ? `${theSpot.name}` : 'Loading spot name...'}</h2>
+          <section>
+            <h2
+              className="spotName"
+            >{theSpot ? `${theSpot.name}` : 'Loading spot name...'}</h2>
             <div>
               {theSpot ? `${theSpot.city}, ${theSpot.state}, ${theSpot.country}` : ''}
             </div>
           </section>
 
-          <img src={BlueHouse}></img>
+          <section className="images">
+            <img className='bigImg' src={BlueHouse} style={{ width: '100%' }}></img>
+
+            <div className="smallImages">
+              <img className='img 1' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img 2' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img 3' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img 4' src={BlueHouse} style={{ width: '100%' }}></img>
+            </div>
+          </section>
 
           <section className="spotDetailsFooter">
             <div>

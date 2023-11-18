@@ -1,6 +1,25 @@
 .spotDetails {
-  max-width: 1000px;
+  width: 1000px;
   margin-bottom: 50px;
+}
+
+.spotName {
+  margin: 0;
+}
+
+.images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  margin: 10px 0;
+}
+
+
+
+.smallImages {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
 }
 
 .spotDetailsFooter {

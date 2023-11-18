@@ -4,8 +4,6 @@ import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 
 import * as sessionActions from "../../store/session";
-import { csrfFetch } from "../../store/csrf";
-
 import './LoginForm.css'
 
 
@@ -65,11 +63,12 @@ export default function LoginFormModal() {
 
   return (
     <>
-      <h1 className="login">Log In:</h1>
+      <h1 className="login-header">Log In</h1>
 
       <form onSubmit={handleSubmit} className="loginForm">
-        <label>Credential:
+        <label>
           <input
+            placeholder="Username or Email"
             type="text"
             value={credential}
             onChange={e => setCredential(e.target.value)}
@@ -78,8 +77,9 @@ export default function LoginFormModal() {
           </input>
         </label>
 
-        <label>Password:
+        <label>
           <input
+            placeholder="Password"
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
@@ -89,18 +89,21 @@ export default function LoginFormModal() {
         </label>
         {errors.message && <p className="err">The provided credentials were invalid.</p>}
 
-        <button
-          disabled={disabled}
-          className="loginBtn"
-        >
-          Log In
-        </button>
+        <div className="loginBtn">
+          <button
+            className="clickable"
+            disabled={disabled}
+          >
+            Log In
+          </button>
+        </div>
       </form>
 
-      <div
-        onClick={demoLogin}
-        className="demoLogin"
-      >Demo User</div>
+      <div className="demoLogin">
+        <div
+          onClick={demoLogin}
+        >Demo User</div>
+      </div>
     </>
   )
 }

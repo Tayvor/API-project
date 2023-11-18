@@ -1,6 +1,22 @@
 .signupForm {
-  border: 2px solid black;
   display: flex;
   flex-direction: column;
   width: 250px;
+}
+
+.signupForm>label {
+  margin-bottom: 5px;
+}
+
+.signupHeader {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.signupForm>button {
+  margin-top: 5px;
+  height: 35px;
 }

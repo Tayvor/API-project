@@ -1,5 +1,4 @@
 import { useDispatch } from 'react-redux';
-import { deleteReviewById } from '../../store/spots';
 import * as spotActions from '../../store/spots';
 import './DeleteReviewModal.css'
 

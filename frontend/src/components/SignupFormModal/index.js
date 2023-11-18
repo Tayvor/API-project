@@ -55,8 +55,9 @@ export default function SignupFormModal() {
 
   return (
     <>
-      <h1>Signup:</h1>
+      <h1 className="signupHeader">Signup</h1>
       <form onSubmit={handleSignup} className="signupForm">
+
         <label>
           Email:
           <input
@@ -67,6 +68,7 @@ export default function SignupFormModal() {
           ></input>
         </label>
         {errors.email && <p className="err">{errors.email}</p>}
+
         <label>
           Username:
           <input
@@ -78,6 +80,7 @@ export default function SignupFormModal() {
           ></input>
         </label>
         {errors.username && <p className="err">{errors.username}</p>}
+
         <label>
           First Name:
           <input
@@ -88,6 +91,7 @@ export default function SignupFormModal() {
           ></input>
         </label>
         {errors.firstName && <p className="err">{errors.firstName}</p>}
+
         <label>
           Last Name:
           <input
@@ -98,6 +102,7 @@ export default function SignupFormModal() {
           ></input>
         </label>
         {errors.lastName && <p className="err">{errors.lastName}</p>}
+
         <label>
           Password:
           <input
@@ -109,6 +114,7 @@ export default function SignupFormModal() {
           ></input>
         </label>
         {errors.password && <p className="err">{errors.password}</p>}
+
         <label>
           Confirm Password:
           <input
@@ -120,6 +126,7 @@ export default function SignupFormModal() {
           ></input>
         </label>
         {errors.confirmPassword && <p className="err">{errors.confirmPassword}</p>}
+
         <button
           disabled={disabled}
           type="submit"
