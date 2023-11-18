@@ -446,38 +446,36 @@ router.put(
 );
 
 // Delete a spot
-router.delete(
-  '/:spotId',
-  async (req, res) => {
-    if (!req.user) {
-      return res.status(401).json({
-        message: "Authentication required"
-      })
-    };
+router.delete('/:spotId', async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Authentication required"
+    })
+  };
 
-    const currUserId = req.user.id;
-    const theSpot = await Spot.findByPk(req.params.spotId);
+  const currUserId = req.user.id;
+  const theSpot = await Spot.findByPk(req.params.spotId);
 
-    if (!theSpot) {
-      return res.status(404).json({
-        message: "Spot couldn't be found"
-      })
-    };
+  if (!theSpot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    })
+  };
 
-    if (currUserId !== theSpot.ownerId) {
-      return res.status(403).json({
-        message: "Forbidden"
-      })
-    };
+  if (currUserId !== theSpot.ownerId) {
+    return res.status(403).json({
+      message: "Forbidden"
+    })
+  };
 
-    if (theSpot && currUserId === theSpot.ownerId) {
-      await theSpot.destroy();
+  if (theSpot && currUserId === theSpot.ownerId) {
+    await theSpot.destroy();
 
-      return res.json({
-        message: 'Successfully deleted'
-      })
-    };
-  }
+    return res.json({
+      message: 'Successfully deleted'
+    })
+  };
+}
 );
 
 // Add an Image to a Spot based on the Spot's id

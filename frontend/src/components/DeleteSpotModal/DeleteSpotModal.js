@@ -5,9 +5,9 @@ import * as spotActions from '../../store/spots';
 
 export default function DeleteSpotModal({ spotId }) {
   const dispatch = useDispatch();
-  // console.log(spotId, '<=== spotId ===');
 
   const deleteSpot = async (e) => {
+    e.preventDefault();
     return dispatch(spotActions.deleteSpot(spotId));
   }
 

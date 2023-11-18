@@ -126,7 +126,11 @@ export const deleteSpot = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: 'DELETE'
   })
-    .then(dispatch(deleteSpotById(spotId)));
+    .then(dispatch(deleteSpotById(spotId)))
+    .catch(async (err) => {
+      const error = await err.json();
+      console.log(error, '<=== Error ===')
+    })
   return res;
 }
 
