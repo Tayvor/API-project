@@ -21,8 +21,8 @@ export default function ManageSpots() {
 
   useEffect(() => {
     dispatch(spotActions.getSpotsByCurrUser())
-      .catch((problem) => {
-        // console.log(problem, '<=== PROBLEM ===');
+      .catch(async (data) => {
+        const problem = await data.json()
         return problem;
       })
       .then(() => setIsLoaded(true))

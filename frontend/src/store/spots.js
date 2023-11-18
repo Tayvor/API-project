@@ -5,6 +5,7 @@ const GET_SPOT_BY_ID = 'GET_SPOT_BY_ID';
 const GET_SPOT_BY_USER = 'GET_SPOT_BY_USER';
 const DELETE_SPOT = 'DELETE_SPOT';
 const GET_REVIEWS = 'GET_REVIEWS';
+const DELETE_REVIEW = 'DELETE_REVIEW';
 
 const getSpots = (allSpots) => {
   return {
@@ -38,6 +39,13 @@ const getSpotReviews = (reviews) => {
   return {
     type: GET_REVIEWS,
     reviews: reviews
+  }
+}
+
+const deleteReview = (reviewId) => {
+  return {
+    type: DELETE_REVIEW,
+    reviewId: reviewId
   }
 }
 
@@ -129,7 +137,8 @@ export const deleteSpot = (spotId) => async (dispatch) => {
     .then(dispatch(deleteSpotById(spotId)))
     .catch(async (err) => {
       const error = await err.json();
-      console.log(error, '<=== Error ===')
+      // console.log(error, '<=== Error ===')
+      return error;
     })
   return res;
 }
@@ -143,6 +152,19 @@ export const getReviewsBySpotId = (spotId) => async (dispatch) => {
     const reviews = await dispatch(getSpotReviews(data.Reviews))
     return reviews;
   }
+  return res;
+}
+
+export const deleteReviewById = (reviewId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: 'DELETE'
+  })
+    .then(dispatch(deleteReview(reviewId)))
+    .catch(async (err) => {
+      const error = await err.json();
+      console.log(error, '<=== Error ===')
+      return error;
+    })
   return res;
 }
 
@@ -177,6 +199,11 @@ const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {}, currSpotR
       const theReviews = [...action.reviews];
       theReviews.map((review) => newState.currSpotReviews[review.id] = review)
       return newState;
+
+    case DELETE_REVIEW:
+      const currSpotReviews = { ...state.currSpotReviews };
+      delete currSpotReviews[action.reviewId];
+      return { ...state, currSpotReviews }
 
     default:
       return state;

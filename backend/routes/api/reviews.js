@@ -137,8 +137,7 @@ router.get(
     const spotReviews = await Review.findAll({
       where: {
         spotId: req.params.spotId
-      },
-      order: [['id', 'DESC']]
+      }
     });
 
     const reviewData = [];
