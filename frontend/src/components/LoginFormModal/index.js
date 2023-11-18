@@ -39,8 +39,20 @@ export default function LoginFormModal() {
 
   const demoLogin = (e) => {
     e.preventDefault();
-    // todo
-    // login as demo user, need to create demo user!
+    const credential = 'demo';
+    const password = 'password';
+
+    return dispatch(sessionActions.loginUser({ credential, password }))
+      .then(() => closeModal())
+      .then(history.push('/'))
+      .catch(async (res) => {
+        const data = await res.json();
+        setErrors({ ...data })
+
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
   }
 
   useEffect(() => {
@@ -85,7 +97,10 @@ export default function LoginFormModal() {
         </button>
       </form>
 
-      <div className="demoLogin">Demo User</div>
+      <div
+        onClick={demoLogin}
+        className="demoLogin"
+      >Demo User</div>
     </>
   )
 }
