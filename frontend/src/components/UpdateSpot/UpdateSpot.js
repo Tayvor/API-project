@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import * as spotActions from '../../store/spots';
 
@@ -20,7 +20,7 @@ export default function CreateASpot() {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState(0);
-  const [imgUrl1, setImgUrl1] = useState('fix me');
+  const [imgUrl1, setImgUrl1] = useState('');
   const [imgUrl2, setImgUrl2] = useState('');
   const [imgUrl3, setImgUrl3] = useState('');
   const [imgUrl4, setImgUrl4] = useState('');
@@ -85,7 +85,7 @@ export default function CreateASpot() {
 
     return dispatch(spotActions.updateASpot(updatedSpotInfo))
       .catch(async (problem) => {
-        console.log(problem, '<=== Problem ===');
+        // console.log(problem, '<=== Problem ===');
         return problem;
       })
       .then((spot) => {
