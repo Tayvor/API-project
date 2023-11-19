@@ -130,7 +130,7 @@ export default function SpotDetails() {
                   <div>{review.User.firstName}</div>
                   <div>{`${review.updatedAt.split('-')[1]}, ${review.updatedAt.split('-')[0]}`}</div>
                   <div>{review.review}</div>
-                  {currUser.id === review.userId ?
+                  {currUser && currUser.id === review.userId ?
                     <OpenModalMenuItem
                       itemText='Delete'
                       modalComponent={<DeleteReviewModal reviewId={review.id} />} />
