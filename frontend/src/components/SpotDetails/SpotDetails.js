@@ -75,10 +75,10 @@ export default function SpotDetails() {
             <img className='bigImg' src={BlueHouse} style={{ width: '100%' }}></img>
 
             <div className="smallImages">
-              <img className='img 1' src={BlueHouse} style={{ width: '100%' }}></img>
-              <img className='img 2' src={BlueHouse} style={{ width: '100%' }}></img>
-              <img className='img 3' src={BlueHouse} style={{ width: '100%' }}></img>
-              <img className='img 4' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img1' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img2' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img3' src={BlueHouse} style={{ width: '100%' }}></img>
+              <img className='img4' src={BlueHouse} style={{ width: '100%' }}></img>
             </div>
           </section>
 

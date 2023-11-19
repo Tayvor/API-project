@@ -3,13 +3,12 @@
   grid-template-columns: repeat(4, 250px);
 }
 
+/* not working well */
 @media screen and (max-width: 750px) {
   .spots-ctn {
     grid-template-columns: repeat(3, 250px);
   }
 }
-
-/* not working well */
 
 @media screen and (max-width: 500px) {
   .spots-ctn {

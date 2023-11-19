@@ -162,7 +162,7 @@ export const deleteReviewById = (reviewId) => async (dispatch) => {
     .then(dispatch(deleteReview(reviewId)))
     .catch(async (err) => {
       const error = await err.json();
-      console.log(error, '<=== Error ===')
+      // console.log(error, '<=== Error ===')
       return error;
     })
   return res;
@@ -191,6 +191,9 @@ const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {}, currSpotR
     case DELETE_SPOT:
       const userSpots = { ...state.userSpots };
       delete userSpots[action.spotId];
+      const newSpots = { ...state.spots };
+      delete newSpots[action.spotId];
+      state.spots = newSpots;
       return { ...state, userSpots };
 
     case GET_REVIEWS:

@@ -29,8 +29,6 @@ export default function Spots() {
         isLoaded && (
           <div className="spots-ctn">
             {allSpots.map((spot) =>
-
-              // <div className="spots-grid">
               <div
                 key={spot.id}
                 className="spot"
@@ -50,7 +48,6 @@ export default function Spots() {
                 </div>
                 <span>{`$${spot.price} night`}</span>
               </div>
-              // </div>
             )}
           </div>
         )

@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { csrfFetch } from '../../store/csrf';
 import * as spotActions from '../../store/spots';
+import { useModal } from '../../context/Modal';
 import './CreateReview.css'
 
 export default function CreateReview({ spotId }) {
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [reviewText, setReviewText] = useState('');
   const [starRating, setStarRating] = useState(1);
 
@@ -21,6 +23,7 @@ export default function CreateReview({ spotId }) {
       }
     })
       .then(() => dispatch(spotActions.getReviewsBySpotId(spotId)))
+    closeModal();
 
     return res;
   }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import blueHouse from './blueHouse.avif'
@@ -15,7 +15,6 @@ export default function ManageSpots() {
   const history = useHistory();
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [editSpotUrl, setEditSpotUrl] = useState('');
 
   const currUserSpots = useSelector((state) => state.spots.userSpots);
 
@@ -27,12 +26,6 @@ export default function ManageSpots() {
       })
       .then(() => setIsLoaded(true))
   }, [dispatch]);
-
-  useEffect(() => {
-    if (editSpotUrl.length) {
-      history.push(editSpotUrl);
-    }
-  }, [editSpotUrl])
 
   return (
     <>
@@ -66,7 +59,7 @@ export default function ManageSpots() {
               >
                 <button
                   className='editSpotBtn'
-                  onClick={(e) => setEditSpotUrl(`/spots/${spot.id}/edit`)}
+                  onClick={() => history.push(`/spots/${spot.id}/edit`)}
                 >Update
                 </button>
 
