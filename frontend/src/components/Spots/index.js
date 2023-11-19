@@ -27,18 +27,21 @@ export default function Spots() {
     <>
       {
         isLoaded && (
-          <div className="allSpots">
+          <div className="spots-ctn">
             {allSpots.map((spot) =>
 
+              // <div className="spots-grid">
               <div
                 key={spot.id}
                 className="spot"
                 onClick={(e) => history.push(`/spots/${spot.id}`)}
               >
-                <img title={`${spot.name}`} src={blueHouse}
-                  style={{ height: 260, width: 270, borderRadius: 15 }}
+                <img
+                  title={`${spot.name}`}
+                  src={blueHouse}
+                  className="spotImg"
                 ></img>
-                <div className="cityStateStar">
+                <div className="spot-footer">
                   <div>{`${spot.city}, ${spot.state}`}</div>
                   <i className="fas fa-star">
                     {spot.avgRating ?
@@ -47,6 +50,7 @@ export default function Spots() {
                 </div>
                 <span>{`$${spot.price} night`}</span>
               </div>
+              // </div>
             )}
           </div>
         )

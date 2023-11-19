@@ -28,7 +28,11 @@ function App() {
       <hr width='100%' />
       {isLoaded &&
         <Switch>
-          <Route exact path='/' component={Spots} />
+          <Route exact path='/'>
+            <div className='all-spots'>
+              <Spots />
+            </div>
+          </Route>
 
           <Route path='/spots/new'>
             <div className='createASpot'>
