@@ -184,6 +184,7 @@ const spotReducer = (state = { spots: {}, currSpot: {}, userSpots: {}, currSpotR
 
     case GET_SPOT_BY_USER:
       newState = { ...state };
+      newState.userSpots = {};
       const currUserSpots = [...action.payload.Spots];
       currUserSpots.map((spot) => newState.userSpots[spot.id] = spot)
       return newState;

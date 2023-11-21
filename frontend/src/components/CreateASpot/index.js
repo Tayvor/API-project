@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import * as spotActions from '../../store/spots';
 
 import './CreateASpot.css';
+import { csrfFetch } from "../../store/csrf";
 
 export default function CreateASpot() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function CreateASpot() {
     setErrors(errors);
 
     if (Object.keys(errors).length) {
-      console.log(errors, '<=== errors ===');
+      // console.log(errors, '<=== errors ===');
       return errors;
     } else {
       handleSubmit();
@@ -62,13 +63,34 @@ export default function CreateASpot() {
       price: Number(price),
     }
 
+    // console.log(newSpotInfo)
+
     return dispatch(spotActions.createASpot(newSpotInfo))
       .catch(async (problem) => {
-        console.log(problem, '<=== Problem ===');
+        // console.log(problem, '<=== Problem ===');
+        return problem;
       })
-      .then((spot) => {
+      .then(async (spot) => {
         const { id } = spot;
+
+        const addPreviewImg = await csrfFetch(`/api/spots/${id}/images`, {
+          method: 'POST',
+          Headers: {
+            'Content-Type': 'application/json'
+          },
+          body: {
+            'url': imgUrl1,
+            'preview': true
+          }
+        })
+
+        addPreviewImg();
+
         history.push(`/spots/${id}`)
+      })
+      .catch(async (err) => {
+        const data = await err.json();
+        return data;
       })
   };
 

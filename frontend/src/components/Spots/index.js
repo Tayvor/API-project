@@ -36,7 +36,7 @@ export default function Spots() {
               >
                 <img
                   title={`${spot.name}`}
-                  src={blueHouse}
+                  src={spot.previewImage || blueHouse}
                   className="spotImg"
                 ></img>
                 <div className="spot-footer">

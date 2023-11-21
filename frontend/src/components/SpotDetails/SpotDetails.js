@@ -19,14 +19,21 @@ export default function SpotDetails() {
   const [starAvg, setStarAvg] = useState(0);
   const [numReviews, setNumReviews] = useState(0);
   const [currUserReview, setCurrUserReview] = useState(false);
+  // const [imgCount, setImgCount] = useState(0);
 
   useEffect(() => {
     dispatch(spotActions.getSpotById(spotId))
+      // .catch((err) => {
+      //   const data = err.json();
+      //   console.log(data, '<== Data ===');
+      //   return
+      // })
       .then(() => dispatch(spotActions.getReviewsBySpotId(spotId)))
       .then(() => setIsLoaded(true));
   }, [dispatch])
 
-  const theSpot = useSelector((state) => state.spots.currSpot)
+  const theSpot = useSelector((state) => state.spots.currSpot);
+  const theImages = useSelector((state) => state.spots.currSpot.SpotImages)
   const theReviews = useSelector((state) => state.spots.currSpotReviews);
   const currUser = useSelector((state) => state.session.user);
 
@@ -72,7 +79,13 @@ export default function SpotDetails() {
           </section>
 
           <section className="images">
-            <img className='bigImg' src={BlueHouse} style={{ width: '100%' }}></img>
+            {theImages && theImages.map((image) => {
+              if (image.preview) {
+                return <img className='bigImg' src={image.url} style={{ width: '100%' }}></img>
+              }
+            })}
+
+            {!theImages.length ? <img className='bigImg' src={BlueHouse} style={{ width: '100%' }}></img> : ''}
 
             <div className="smallImages">
               <img className='img1' src={BlueHouse} style={{ width: '100%' }}></img>

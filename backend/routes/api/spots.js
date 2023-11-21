@@ -310,22 +310,22 @@ router.get(
         lastName: owner.lastName
       };
 
-      // const SpotImages = [];
-      // const images = await SpotImage.findAll({
-      //   where: {
-      //     spotId: theSpot.id,
-      //   }
-      // });
+      const images = await SpotImage.findAll({
+        where: {
+          spotId: theSpot.id,
+        }
+      });
+      const SpotImages = [];
 
-      // for (const image of images) {
-      //   const anImage = {
-      //     id: image.id,
-      //     url: image.url,
-      //     preview: image.preview,
-      //   };
+      for (const image of images) {
+        const anImage = {
+          id: image.id,
+          url: image.url,
+          preview: image.preview,
+        };
 
-      //   SpotImages.push(anImage);
-      // };
+        SpotImages.push(anImage);
+      };
 
       // let starSum = 0;
       // let reviewCount = 0;
@@ -363,7 +363,7 @@ router.get(
         price: theSpot.price,
         // numReviews: reviewCount,
         // avgStarRating: theSpot.avgRating,
-        // SpotImages,
+        SpotImages,
         Owner: ownerDetails
       }
       return res.json({
@@ -504,10 +504,9 @@ router.post(
       })
     };
 
-    const spotPreviewImage = await Image.findOne({
+    const spotPreviewImage = await SpotImage.findOne({
       where: {
-        imageableId: theSpot.id,
-        imageableType: 'spot',
+        spotId: theSpot.id,
         preview: true
       }
     });
@@ -524,10 +523,9 @@ router.post(
       await spotPreviewImage.save()
     };
 
-    const theSpotImages = await Image.findAll({
+    const theSpotImages = await SpotImage.findAll({
       where: {
-        imageableId: theSpot.id,
-        imageableType: 'spot'
+        spotId: theSpot.id
       }
     });
 
@@ -537,10 +535,9 @@ router.post(
       })
     };
 
-    const imageableId = theSpot.id;
-    const imageableType = 'spot';
+    const spotId = theSpot.id;
 
-    const newImage = await Image.create({ url, preview, imageableId, imageableType });
+    const newImage = await SpotImage.create({ url, preview, spotId });
     const imageInfo = {
       id: newImage.id,
       url: newImage.url,

@@ -21,8 +21,9 @@ export default function ManageSpots() {
   useEffect(() => {
     dispatch(spotActions.getSpotsByCurrUser())
       .catch(async (data) => {
-        const problem = await data.json()
-        return problem;
+        // const problem = await data.json()
+        console.log(data, '<=== Data ===')
+        return data;
       })
       .then(() => setIsLoaded(true))
   }, [dispatch]);
@@ -41,7 +42,7 @@ export default function ManageSpots() {
               <img
                 className='spotImg'
                 onClick={() => history.push(`/spots/${spot.id}`)}
-                src={blueHouse}
+                src={spot.previewImage || blueHouse}
                 style={{ height: 260, width: 270, borderRadius: 15 }}
               ></img>
 
