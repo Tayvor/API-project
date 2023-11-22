@@ -1,14 +1,48 @@
-.login {
-  color: red;
+.login-header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 .loginForm {
-  border: 2px solid black;
   display: flex;
   flex-direction: column;
-  width: 250px;
+  width: 100%;
+}
+
+.loginForm>label {
+  margin-bottom: 10px;
 }
 
 .loginBtn {
-  width: 75px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.loginBtn>button {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 35px;
+  font-size: 15px;
+}
+
+.demoLogin {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+  text-decoration: underline;
+}
+
+.demoLogin>div:hover {
+  cursor: pointer;
+}
+
+.err {
+  margin-top: 5px;
+  color: red;
 }

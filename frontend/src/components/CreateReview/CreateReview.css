@@ -1,0 +1,29 @@
+.reviewModal {
+  padding: 10px;
+}
+
+.reviewTextArea {
+  width: 100%;
+  height: 100px;
+}
+
+.stars {
+  margin: 10px 0;
+  width: fit-content;
+}
+
+.stars i:hover~i {
+  color: #222;
+}
+
+.stars:hover i {
+  color: #fc0;
+}
+
+.lit {
+  color: #fc0
+}
+
+.revStar:hover {
+  cursor: pointer;
+}

@@ -1,21 +1,34 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 import ProfileButton from "./ProfileButton";
+
 import './Navigation.css';
 
 export default function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
+  const history = useHistory();
+
+  const viewNewSpotForm = (e) => {
+    e.preventDefault();
+    history.push('/spots/new');
+  };
 
   return (
-    <ul className="ul">
-      <li>
-        <NavLink exact to='/'>Home</NavLink>
-      </li>
-      {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-      )}
-    </ul>
+    <div className="header">
+      <NavLink exact to='/'>
+        <i className="fab fa-airbnb"> R a i r - B n B</i>
+      </NavLink>
+
+      <div className="header-right">
+        {sessionUser ?
+          <div onClick={viewNewSpotForm} className="newSpotDiv">Create a New Spot</div>
+          : null
+        }
+        {isLoaded && <ProfileButton user={sessionUser} />}
+      </div>
+
+    </div>
   )
 };

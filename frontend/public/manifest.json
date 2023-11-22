@@ -1,6 +1,11 @@
 {
-  "short_name": "React Template",
-  "name": "Create React App Template",
+  "short_name": "rBnB",
+  "name": "RairBnB",
+  "icons": [
+    {
+      "src": "favicon.ico"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

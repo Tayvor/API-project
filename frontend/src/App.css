@@ -1,0 +1,14 @@
+.createASpot {
+  display: flex;
+  justify-content: center;
+}
+
+.currSpot {
+  display: flex;
+  justify-content: center;
+}
+
+.all-spots {
+  display: flex;
+  justify-content: center;
+}

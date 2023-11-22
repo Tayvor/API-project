@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from '../../store/session';
@@ -13,6 +13,8 @@ export default function SignupFormModal() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [disabled, setDisabled] = useState(true);
+
   const { closeModal } = useModal();
 
   const handleSignup = (e) => {
@@ -37,14 +39,25 @@ export default function SignupFormModal() {
         });
     }
     return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+      confirmPassword: "Passwords do not match!"
     });
   };
 
+  useEffect(() => {
+    setDisabled(true)
+    if (email && username && username.length > 3 &&
+      firstName && lastName &&
+      password && password.length > 5 &&
+      confirmPassword && confirmPassword.length > 5) {
+      setDisabled(false)
+    }
+  }, [email, username, firstName, lastName, password, confirmPassword]);
+
   return (
     <>
-      <h1>Signup:</h1>
+      <h1 className="signupHeader">Signup</h1>
       <form onSubmit={handleSignup} className="signupForm">
+
         <label>
           Email:
           <input
@@ -54,17 +67,20 @@ export default function SignupFormModal() {
             required
           ></input>
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className="err">{errors.email}</p>}
+
         <label>
           Username:
           <input
+            placeholder="Enter at least 4 characters."
             type="text"
             onChange={(e) => setUsername(e.target.value)}
             value={username}
             required
           ></input>
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && <p className="err">{errors.username}</p>}
+
         <label>
           First Name:
           <input
@@ -74,7 +90,8 @@ export default function SignupFormModal() {
             required
           ></input>
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className="err">{errors.firstName}</p>}
+
         <label>
           Last Name:
           <input
@@ -84,28 +101,36 @@ export default function SignupFormModal() {
             required
           ></input>
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className="err">{errors.lastName}</p>}
+
         <label>
           Password:
           <input
+            placeholder="Enter at least 6 characters."
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             required
           ></input>
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="err">{errors.password}</p>}
+
         <label>
           Confirm Password:
           <input
+            placeholder="Enter at least 6 characters."
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
             required
           ></input>
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up!</button>
+        {errors.confirmPassword && <p className="err">{errors.confirmPassword}</p>}
+
+        <button
+          disabled={disabled}
+          type="submit"
+        >Sign Up!</button>
       </form>
     </>
   )

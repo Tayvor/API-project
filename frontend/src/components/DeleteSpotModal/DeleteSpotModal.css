@@ -1,0 +1,29 @@
+.confirmDel-header {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.confirmDel-desc {
+  margin-bottom: 0;
+}
+
+.deleteSpotBtns {
+  display: flex;
+  flex-direction: column;
+}
+
+.deleteSpotBtns>button {
+  margin-top: 10px;
+  height: 35px;
+  color: white;
+}
+
+.yesDelete {
+  background-color: red;
+}
+
+.noKeep {
+  background-color: darkgray;
+}

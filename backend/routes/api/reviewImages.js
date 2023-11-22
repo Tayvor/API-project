@@ -16,10 +16,10 @@ router.delete(
 
     const currUserId = req.user.id;
 
-    const theImage = await Image.findOne({
+    const theImage = await ReviewImage.findOne({
       where: {
         id: req.params.imageId,
-        imageableType: 'review'
+        // imageableType: 'review'
       }
     });
 
@@ -29,7 +29,7 @@ router.delete(
       })
     };
 
-    const theReview = await Review.findByPk(theImage.imageableId);
+    const theReview = await Review.findByPk(theImage.reviewId);
 
     if (theReview.userId !== currUserId) {
       return res.status(403).json({

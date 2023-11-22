@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, User, Image, Review } = require('../../db/models');
+const { Spot, User, SpotImage, Review } = require('../../db/models');
 const { Op } = require("sequelize");
 
 const { check } = require('express-validator');
@@ -65,7 +65,6 @@ router.post(
     };
 
     const ownerId = req.user.id;
-
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     if (Number(price) <= 0) {
@@ -230,10 +229,9 @@ router.get(
       let starSum = 0;
       let reviewCount = 0;
 
-      const previewImage = await Image.findOne({
+      const previewImage = await SpotImage.findOne({
         where: {
-          imageableId: spot.id,
-          imageableType: 'spot',
+          spotId: spot.id,
           preview: true
         }
       });
@@ -312,13 +310,12 @@ router.get(
         lastName: owner.lastName
       };
 
-      const SpotImages = [];
-      const images = await Image.findAll({
+      const images = await SpotImage.findAll({
         where: {
-          imageableId: theSpot.id,
-          imageableType: 'spot'
+          spotId: theSpot.id,
         }
       });
+      const SpotImages = [];
 
       for (const image of images) {
         const anImage = {
@@ -330,25 +327,25 @@ router.get(
         SpotImages.push(anImage);
       };
 
-      let starSum = 0;
-      let reviewCount = 0;
+      // let starSum = 0;
+      // let reviewCount = 0;
 
-      const Reviews = await Review.findAll({
-        where: {
-          spotId: theSpot.id
-        }
-      });
+      // const Reviews = await Review.findAll({
+      //   where: {
+      //     spotId: theSpot.id
+      //   }
+      // });
 
-      for (const review of Reviews) {
-        starSum += review.starRating;
-        reviewCount++;
-      };
+      // for (const review of Reviews) {
+      //   starSum += review.starRating;
+      //   reviewCount++;
+      // };
 
-      const avgStarRating = starSum / reviewCount;
+      // const avgStarRating = starSum / reviewCount;
 
-      theSpot.set({
-        avgRating: avgStarRating,
-      });
+      // theSpot.set({
+      //   avgRating: avgStarRating,
+      // });
 
       await theSpot.save();
 
@@ -364,8 +361,8 @@ router.get(
         name: theSpot.name,
         description: theSpot.description,
         price: theSpot.price,
-        numReviews: reviewCount,
-        avgStarRating: theSpot.avgRating,
+        // numReviews: reviewCount,
+        // avgStarRating: theSpot.avgRating,
         SpotImages,
         Owner: ownerDetails
       }
@@ -449,38 +446,36 @@ router.put(
 );
 
 // Delete a spot
-router.delete(
-  '/:spotId',
-  async (req, res) => {
-    if (!req.user) {
-      return res.status(401).json({
-        message: "Authentication required"
-      })
-    };
+router.delete('/:spotId', async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Authentication required"
+    })
+  };
 
-    const currUserId = req.user.id;
-    const theSpot = await Spot.findByPk(req.params.spotId);
+  const currUserId = req.user.id;
+  const theSpot = await Spot.findByPk(req.params.spotId);
 
-    if (!theSpot) {
-      return res.status(404).json({
-        message: "Spot couldn't be found"
-      })
-    };
+  if (!theSpot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found"
+    })
+  };
 
-    if (currUserId !== theSpot.ownerId) {
-      return res.status(403).json({
-        message: "Forbidden"
-      })
-    };
+  if (currUserId !== theSpot.ownerId) {
+    return res.status(403).json({
+      message: "Forbidden"
+    })
+  };
 
-    if (theSpot && currUserId === theSpot.ownerId) {
-      await theSpot.destroy();
+  if (theSpot && currUserId === theSpot.ownerId) {
+    await theSpot.destroy();
 
-      return res.json({
-        message: 'Successfully deleted'
-      })
-    };
-  }
+    return res.json({
+      message: 'Successfully deleted'
+    })
+  };
+}
 );
 
 // Add an Image to a Spot based on the Spot's id
@@ -495,6 +490,7 @@ router.post(
 
     const currUserId = req.user.id;
     const theSpot = await Spot.findByPk(req.params.spotId);
+
     let { url, preview } = req.body;
 
     if (!theSpot) {
@@ -509,10 +505,9 @@ router.post(
       })
     };
 
-    const spotPreviewImage = await Image.findOne({
+    const spotPreviewImage = await SpotImage.findOne({
       where: {
-        imageableId: theSpot.id,
-        imageableType: 'spot',
+        spotId: theSpot.id,
         preview: true
       }
     });
@@ -529,10 +524,9 @@ router.post(
       await spotPreviewImage.save()
     };
 
-    const theSpotImages = await Image.findAll({
+    const theSpotImages = await SpotImage.findAll({
       where: {
-        imageableId: theSpot.id,
-        imageableType: 'spot'
+        spotId: theSpot.id
       }
     });
 
@@ -542,10 +536,9 @@ router.post(
       })
     };
 
-    const imageableId = theSpot.id;
-    const imageableType = 'spot';
+    const spotId = theSpot.id;
 
-    const newImage = await Image.create({ url, preview, imageableId, imageableType });
+    const newImage = await SpotImage.create({ url, preview, spotId });
     const imageInfo = {
       id: newImage.id,
       url: newImage.url,

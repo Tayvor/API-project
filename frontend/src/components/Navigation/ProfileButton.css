@@ -1,0 +1,85 @@
+.openUserMenuBtn {
+  border: 1px solid gray;
+  border-radius: 20px;
+  height: 35px;
+}
+
+.openUserMenuBtn:focus {
+  background-color: gainsboro;
+}
+
+.profile-dropdown {
+  position: absolute;
+}
+
+.userMenu {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 130px;
+  background-color: white;
+  left: 25px;
+  top: 25px;
+  padding: 15px;
+  border: 1px solid gray;
+  border-radius: 15px;
+}
+
+.baseMenu {
+  border: 1px solid gray;
+  border-radius: 15px;
+  padding: 10px;
+  background-color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  left: -95px;
+  top: 25px;
+}
+
+.baseMenu>button {
+  border-radius: 15px;
+  padding: 5px;
+  background-color: white;
+  border: none;
+}
+
+.baseMenu>button:hover {
+  background-color: gainsboro;
+}
+
+.manageSpots {
+  justify-self: center;
+}
+
+.manageSpots:hover {
+  cursor: pointer;
+  background-color: gainsboro;
+}
+
+.logoutBtn {
+  border: 1px solid gray;
+  border-radius: 10px;
+  height: 25px;
+  margin-top: 5px;
+}
+
+.logoutBtn:hover {
+  cursor: pointer;
+  background-color: gainsboro;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.fa-user-circle {
+  font-size: 20px;
+  padding: 0 6px;
+}
+
+.fa-bars {
+  font-size: 18px;
+  padding-left: 6px;
+}

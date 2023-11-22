@@ -1,0 +1,108 @@
+.spotDetails {
+  width: 1000px;
+  margin-bottom: 50px;
+}
+
+.spotName {
+  margin: 0;
+}
+
+.images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.bigImg {
+  border-radius: 15px;
+  height: 335px;
+}
+
+.img1 {
+  border-top-left-radius: 15px;
+}
+
+.img2 {
+  border-top-right-radius: 15px;
+}
+
+.img3 {
+  border-bottom-left-radius: 15px;
+}
+
+.img4 {
+  border-bottom-right-radius: 15px;
+}
+
+.smallImages {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+.spotDetailsFooter {
+  display: grid;
+  grid-template-columns: 600px 1fr;
+}
+
+.spotDesc {
+  word-wrap: break-word;
+}
+
+.spotDetailsReserveBox {
+  border: 2px solid gray;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-self: end;
+  padding: 15px;
+  width: 70%;
+  height: fit-content;
+}
+
+.reserveBoxTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reserveBtn {
+  background-color: red;
+  width: 100%;
+  height: 35px;
+  margin-top: 10px;
+}
+
+.reserveBtn:hover {
+  cursor: pointer;
+}
+
+.spotDetailsReviews {
+  margin-top: 10px;
+  word-wrap: break-word;
+}
+
+.review {
+  margin-top: 5px;
+}
+
+.reviewFName {
+  font-weight: bold;
+}
+
+.reviewDate {
+  color: rgb(141, 141, 141);
+}
+
+.reviewContent {
+  margin-bottom: 5px;
+}
+
+.postReviewBtn {
+  color: white;
+  background-color: gray;
+}
+
+.postReviewBtn:hover {
+  cursor: pointer;
+}

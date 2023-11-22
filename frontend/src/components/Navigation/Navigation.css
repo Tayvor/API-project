@@ -1,7 +1,43 @@
-.ul {
-  border: 2px solid black;
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: row;
+}
+
+.newSpotDiv {
+  width: 150px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+
+.newSpotDiv:hover {
+  cursor: pointer;
+  border: 1px solid gray;
+  background-color: #f0f0f0;
+}
+
+.newSpotDiv:focus {
+  border: 1px solid gray;
+  background-color: gainsboro;
 }
 
 .hidden {
   display: none;
+}
+
+.fab {
+  color: black;
+  width: fit-content;
+  font-size: 25px;
 }
