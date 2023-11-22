@@ -85,7 +85,9 @@ export default function SpotDetails() {
               }
             })}
 
-            {!theImages.length ? <img className='bigImg' src={BlueHouse} style={{ width: '100%' }}></img> : ''}
+            {!theImages.length ? (
+              <img className='bigImg' src={BlueHouse} style={{ width: '100%' }}></img>
+            ) : ''}
 
             <div className="smallImages">
               <img className='img1' src={BlueHouse} style={{ width: '100%' }}></img>
@@ -140,9 +142,9 @@ export default function SpotDetails() {
                   className="review"
                 >
                   <hr width='100%' />
-                  <div>{review.User.firstName}</div>
-                  <div>{`${review.updatedAt.split('-')[1]}, ${review.updatedAt.split('-')[0]}`}</div>
-                  <div>{review.review}</div>
+                  <div className="reviewFName">{review.User.firstName}</div>
+                  <div className="reviewDate">{`${review.updatedAt.split('-')[1]}, ${review.updatedAt.split('-')[0]}`}</div>
+                  <div className="reviewContent">{review.review}</div>
                   {currUser && currUser.id === review.userId ?
                     <OpenModalMenuItem
                       itemText='Delete'

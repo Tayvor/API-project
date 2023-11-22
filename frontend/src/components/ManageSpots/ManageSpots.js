@@ -22,7 +22,7 @@ export default function ManageSpots() {
     dispatch(spotActions.getSpotsByCurrUser())
       .catch(async (data) => {
         // const problem = await data.json()
-        console.log(data, '<=== Data ===')
+        // console.log(data, '<=== Data ===')
         return data;
       })
       .then(() => setIsLoaded(true))

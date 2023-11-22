@@ -11,6 +11,12 @@
   justify-self: center;
 }
 
+.cityStateStar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
 .spotImg:hover {
   cursor: pointer;
 }
@@ -27,7 +33,3 @@
 .deleteSpotBtn:hover {
   cursor: pointer;
 }
-
-/* .hello {
-  width: 900px
-} */

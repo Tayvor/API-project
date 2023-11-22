@@ -490,6 +490,7 @@ router.post(
 
     const currUserId = req.user.id;
     const theSpot = await Spot.findByPk(req.params.spotId);
+
     let { url, preview } = req.body;
 
     if (!theSpot) {

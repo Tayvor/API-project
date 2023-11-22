@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import * as spotActions from '../../store/spots';
 
 import './UpdateSpot.css';
+import { csrfFetch } from "../../store/csrf";
 
 export default function CreateASpot() {
   const dispatch = useDispatch();
@@ -20,18 +21,19 @@ export default function CreateASpot() {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState(0);
-  const [imgUrl1, setImgUrl1] = useState('');
+
+  const [previewImg, setPreviewImg] = useState('');
   const [imgUrl2, setImgUrl2] = useState('');
   const [imgUrl3, setImgUrl3] = useState('');
   const [imgUrl4, setImgUrl4] = useState('');
   const [imgUrl5, setImgUrl5] = useState('');
+
   const [errors, setErrors] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     dispatch(spotActions.getSpotById(spotId))
       .then((spot) => theSpot = spot)
-      .then(() => setIsLoaded(true))
       .then(() => {
         setStreetAddress(theSpot.address)
         setCity(theSpot.city)
@@ -42,7 +44,16 @@ export default function CreateASpot() {
         setLongitude(theSpot.lng)
         setTitle(theSpot.name)
         setPrice(theSpot.price)
+
+        if (theSpot.SpotImages.length) {
+          theSpot.SpotImages.map((img) => {
+            if (img.preview) {
+              setPreviewImg(img.url)
+            }
+          })
+        }
       })
+      .then(() => setIsLoaded(true))
   }, [dispatch])
 
   const validate = (e) => {
@@ -57,7 +68,7 @@ export default function CreateASpot() {
     if (!description) errors.description = 'is required!';
     if (!title) errors.title = 'is required!';
     if (!price) errors.price = 'is required!';
-    if (!imgUrl1) errors.imgUrl1 = 'is required!';
+    if (!previewImg) errors.previewImg = 'is required!';
 
     setErrors(errors);
 
@@ -81,6 +92,25 @@ export default function CreateASpot() {
       name: title,
       description: description,
       price: Number(price),
+    }
+
+    if (previewImg) {
+      const addPreview = async () => await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: 'POST',
+        // Headers: {
+        //   'Content-Type': 'application/json'
+        // },
+        body: JSON.stringify({
+          'url': previewImg,
+          'preview': true
+        })
+      });
+
+      addPreview()
+        .catch(async (err) => {
+          const data = await err.json();
+          console.log(data)
+        })
     }
 
     return dispatch(spotActions.updateASpot(updatedSpotInfo))
@@ -202,17 +232,17 @@ export default function CreateASpot() {
 
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at least one photo to publish your spot.</p>
-          {errors.imgUrl1 ?
-            <div className={errors.imgUrl1 ? 'required' : ''}>
-              {`Preview image ${errors.imgUrl1}`}
+          {errors.previewImg ?
+            <div className={errors.previewImg ? 'required' : ''}>
+              {`Preview image ${errors.previewImg}`}
             </div>
             : ''
           }
           <label>
             <input
               className="imgInput"
-              value={imgUrl1}
-              onChange={(e) => setImgUrl1(e.target.value)}
+              value={previewImg}
+              onChange={(e) => setPreviewImg(e.target.value)}
             ></input>
           </label>
 
@@ -221,7 +251,7 @@ export default function CreateASpot() {
               className="imgInput"
               value={imgUrl2}
               onChange={(e) => setImgUrl2(e.target.value)}
-              disabled={imgUrl1 ? false : true}
+              disabled={previewImg ? false : true}
             ></input>
           </label>
 

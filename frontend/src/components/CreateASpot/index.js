@@ -9,6 +9,7 @@ import { csrfFetch } from "../../store/csrf";
 export default function CreateASpot() {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const [country, setCountry] = useState('');
   const [streetAddress, setStreetAddress] = useState('');
   const [city, setCity] = useState('');
@@ -18,12 +19,15 @@ export default function CreateASpot() {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState();
+
   const [imgUrl1, setImgUrl1] = useState('');
   const [imgUrl2, setImgUrl2] = useState('');
   const [imgUrl3, setImgUrl3] = useState('');
   const [imgUrl4, setImgUrl4] = useState('');
   const [imgUrl5, setImgUrl5] = useState('');
+
   const [errors, setErrors] = useState({});
+  let spotId;
 
   const validate = (e) => {
     e.preventDefault();
@@ -50,7 +54,7 @@ export default function CreateASpot() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newSpotInfo = {
       address: streetAddress,
       city: city,
@@ -62,8 +66,6 @@ export default function CreateASpot() {
       description: description,
       price: Number(price),
     }
-
-    // console.log(newSpotInfo)
 
     return dispatch(spotActions.createASpot(newSpotInfo))
       .catch(async (problem) => {
@@ -78,20 +80,21 @@ export default function CreateASpot() {
           Headers: {
             'Content-Type': 'application/json'
           },
-          body: {
+          body: JSON.stringify({
             'url': imgUrl1,
             'preview': true
-          }
+          })
         })
 
-        addPreviewImg();
-
-        history.push(`/spots/${id}`)
+        spotId = id;
+        return addPreviewImg;
       })
       .catch(async (err) => {
         const data = await err.json();
+        // console.log(err)
         return data;
       })
+      .then(() => history.push(`/spots/${spotId}`))
   };
 
   return (
