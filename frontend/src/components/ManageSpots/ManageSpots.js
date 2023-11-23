@@ -31,7 +31,11 @@ export default function ManageSpots() {
   return (
     <>
       <h2>Manage Spots</h2>
-      {!Object.values(currUserSpots).length ? <button onClick={() => history.push('/spots/new')}>Create a New Spot</button> : ''}
+      {!Object.values(currUserSpots).length ?
+        <button onClick={() => history.push('/spots/new')}
+        >Create a New Spot</button>
+        : ''}
+
       {isLoaded && currUserSpots && (
         <div className='userSpots'>
           {Object.values(currUserSpots).map((spot) =>
@@ -50,10 +54,10 @@ export default function ManageSpots() {
                 <div>{`${spot.city}, ${spot.state}`}</div>
                 <i className="fas fa-star">
                   {spot.avgRating ?
-                    ` ${spot.avgRating.toFixed(1)}` : ' New'}
+                    ` ${parseInt(spot.avgRating).toFixed(1)}` : ' New'}
                 </i>
               </div>
-              <span>{`$${spot.price} night`}</span>
+              <span>{`$${parseInt(spot.price)} night`}</span>
 
               <div
                 className='updateDeleteDiv'
