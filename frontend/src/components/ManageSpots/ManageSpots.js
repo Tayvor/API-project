@@ -29,7 +29,7 @@ export default function ManageSpots() {
   }, [dispatch]);
 
   return (
-    <>
+    <div>
       <h2>Manage Spots</h2>
       {!Object.values(currUserSpots).length ?
         <button onClick={() => history.push('/spots/new')}
@@ -37,7 +37,7 @@ export default function ManageSpots() {
         : ''}
 
       {isLoaded && currUserSpots && (
-        <div className='userSpots'>
+        <div className='spots-ctn'>
           {Object.values(currUserSpots).map((spot) =>
             <div
               key={spot.id}
@@ -47,7 +47,6 @@ export default function ManageSpots() {
                 className='spotImg'
                 onClick={() => history.push(`/spots/${spot.id}`)}
                 src={spot.previewImage || blueHouse}
-                style={{ height: 260, width: 270, borderRadius: 15 }}
               ></img>
 
               <div className="cityStateStar">
@@ -78,6 +77,6 @@ export default function ManageSpots() {
         </div>
       )
       }
-    </>
+    </div>
   )
 }

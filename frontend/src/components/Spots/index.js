@@ -25,32 +25,31 @@ export default function Spots() {
 
   return (
     <>
-      {
-        isLoaded && (
-          <div className="spots-ctn">
-            {allSpots.map((spot) =>
-              <div
-                key={spot.id}
-                className="spot"
-                onClick={(e) => history.push(`/spots/${spot.id}`)}
-              >
-                <img
-                  title={`${spot.name}`}
-                  src={spot.previewImage || blueHouse}
-                  className="spotImg"
-                ></img>
-                <div className="spot-footer">
-                  <div>{`${spot.city}, ${spot.state}`}</div>
-                  <i className="fas fa-star">
-                    {spot.avgRating ?
-                      ` ${spot.avgRating.toFixed(1)}` : ' New'}
-                  </i>
-                </div>
-                <span>{`$${spot.price} night`}</span>
+      {isLoaded && (
+        <div className="spots-ctn">
+          {allSpots.map((spot) =>
+            <div
+              key={spot.id}
+              className="spot"
+              onClick={(e) => history.push(`/spots/${spot.id}`)}
+            >
+              <img
+                title={`${spot.name}`}
+                src={spot.previewImage || blueHouse}
+                className="spotImg"
+              ></img>
+              <div className="spot-footer">
+                <div>{`${spot.city}, ${spot.state}`}</div>
+                <i className="fas fa-star">
+                  {spot.avgRating ?
+                    ` ${spot.avgRating.toFixed(1)}` : ' New'}
+                </i>
               </div>
-            )}
-          </div>
-        )
+              <span>{`$${spot.price} night`}</span>
+            </div>
+          )}
+        </div>
+      )
       }
 
     </>

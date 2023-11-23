@@ -41,7 +41,9 @@ function App() {
           </Route>
 
           <Route path='/spots/current'>
-            <ManageSpots />
+            <div className='manageSpots'>
+              <ManageSpots />
+            </div>
           </Route>
 
           <Route path='/spots/:spotId/edit'>

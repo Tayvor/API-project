@@ -69,7 +69,7 @@ function ProfileButton({ user }) {
 
               <span
                 onClick={manageSpots}
-                className="manageSpots"
+                className="mngSpotsLink"
               >Manage Spots
               </span>
               <hr width='100%' />

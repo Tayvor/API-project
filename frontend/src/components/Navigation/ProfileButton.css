@@ -49,11 +49,7 @@
   background-color: gainsboro;
 }
 
-.manageSpots {
-  justify-self: center;
-}
-
-.manageSpots:hover {
+.mngSpotsLink:hover {
   cursor: pointer;
   background-color: gainsboro;
 }
