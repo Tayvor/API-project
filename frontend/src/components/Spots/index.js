@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import * as spotActions from '../../store/spots';
-
-import './Spots.css'
 import blueHouse from './images/blueHouse.avif';
+import './Spots.css'
+
 
 export default function Spots() {
   const dispatch = useDispatch();

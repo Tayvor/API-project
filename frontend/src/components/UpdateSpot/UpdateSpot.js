@@ -70,10 +70,12 @@ export default function CreateASpot() {
     if (!price) errors.price = 'is required!';
     if (!previewImg) errors.previewImg = 'is required!';
 
+    if (parseInt(price) <= 0) errors.price = 'must be greater than zero!'
+
     setErrors(errors);
 
     if (Object.keys(errors).length) {
-      console.log(errors, '<=== errors ===');
+      // console.log(errors, '<=== errors ===');
       return errors;
     } else {
       handleSubmit();
@@ -114,9 +116,10 @@ export default function CreateASpot() {
     }
 
     return dispatch(spotActions.updateASpot(updatedSpotInfo))
-      .catch(async (problem) => {
-        // console.log(problem, '<=== Problem ===');
-        return problem;
+      .catch(async (err) => {
+        const data = await err.json();
+        console.log(data, '<=== Error ===');
+        return data;
       })
       .then((spot) => {
         const { id } = spot;

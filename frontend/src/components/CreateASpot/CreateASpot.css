@@ -1,51 +1,139 @@
+/* Form */
 .newSpotForm {
+  max-width: 400px;
+  margin-bottom: 50px;
+}
+
+.newSpotForm>h3 {
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.newSpotForm>p {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.required {
+  color: red;
+}
+
+.createSpotDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.createSpotBtn {
+  border: 2px solid black;
+  background-color: #ff5a5f;
+  color: white;
+  width: 100px;
+  padding: 3px;
+  box-shadow: black 2px 2px;
+}
+
+.createSpotBtn:hover {
+  cursor: pointer;
+}
+
+
+/* Location */
+.newSpotLocation>label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.newSpotLocation>.cityStateDiv {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 5px;
+}
+
+.newSpotLocation>.cityStateDiv>label {
+  display: flex;
+  flex-direction: column;
+}
+
+.newSpotLocation>label>input {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+}
+
+.newSpotLocation>div>label>input {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+}
+
+
+/* Description */
+.newSpotDescription>label>textarea {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+  width: 100%;
+  min-height: 100px;
+  box-sizing: border-box;
+}
+
+
+/* Title */
+.newSpotTitle>label>input {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* Price */
+.newSpotPrice>label>div {
+  font-size: larger;
+  padding-left: 5px;
+  display: flex;
+}
+
+.newSpotPrice>label>div>input {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+  width: 100%;
+  box-sizing: border-box;
+  margin-left: 5px;
+}
+
+
+/* Images */
+.newSpotImages {
+  display: flex;
+  flex-direction: column;
+}
+
+.newSpotImages>label>input {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+/* Hidden */
+.hidden {
+  display: none;
+}
+
+
+/* .newSpotForm {
   display: flex;
   flex-direction: column;
   width: 380px;
+  min-width: 2px;
   padding: 5px;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-}
-
-.cityStateInputs {
-  display: flex;
-  flex-direction: row;
-}
-
-.cityInput {
-  width: 200px;
-  margin-right: 10px;
-}
-
-.stateInput {
-  width: 154px;
-}
-
-.latLngInputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.lngInput {
-  grid-column-start: 2;
+  border: 1px dashed black;
 }
 
 .newSpotHr {
   margin: 15px 0;
   border: 1px dashed black;
-}
-
-.description {
-  height: 80px;
-  padding: 5px;
-}
-
-.imgInput {
-  margin: 5px 0;
 }
 
 h2 {
@@ -87,4 +175,4 @@ p {
   flex-direction: row;
   color: black;
   align-items: center;
-}
+} */

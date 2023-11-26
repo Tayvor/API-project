@@ -1,22 +1,26 @@
 .spots-ctn {
   display: grid;
-  grid-template-columns: repeat(4, 250px);
 }
 
-/* not working well */
-@media screen and (max-width: 750px) {
+@media screen and (min-width: 1000px) {
+  .spots-ctn {
+    grid-template-columns: repeat(4, 250px);
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 999px) {
   .spots-ctn {
     grid-template-columns: repeat(3, 250px);
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (min-width: 500px) and (max-width: 749px) {
   .spots-ctn {
     grid-template-columns: repeat(2, 250px);
   }
 }
 
-@media screen and (max-width: 250px) {
+@media screen and (max-width: 499px) {
   .spots-ctn {
     grid-template-columns: repeat(1, 250px);
   }
