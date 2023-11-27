@@ -4,8 +4,13 @@
   width: 250px;
 }
 
-.signupForm>label {
+.signupForm>label>input {
+  border: 2px solid black;
+  background-color: #e8f0fe;
+  width: 100%;
+  box-sizing: border-box;
   margin-bottom: 5px;
+
 }
 
 .signupHeader {
@@ -19,4 +24,11 @@
 .signupForm>button {
   margin-top: 5px;
   height: 35px;
+}
+
+.signupForm>button {
+  border: 2px solid black;
+  background-color: #ff5a5f;
+  box-shadow: black 2px 2px;
+  color: white;
 }

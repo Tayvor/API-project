@@ -17,8 +17,12 @@ export default function Navigation({ isLoaded }) {
 
   return (
     <div className="header">
-      <NavLink exact to='/'>
-        <i className="fab fa-airbnb"> R a i r - B n B</i>
+
+      <NavLink exact to='/' style={{ textDecoration: 'none' }}>
+        <div className="headerLeft">
+          <i className="fab fa-airbnb fa-rotate-180"></i>
+          <div>airbnb</div>
+        </div>
       </NavLink>
 
       <div className="header-right">

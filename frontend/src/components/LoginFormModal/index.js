@@ -63,40 +63,34 @@ export default function LoginFormModal() {
 
   return (
     <>
-      <h1 className="login-header">Log In</h1>
-
       <form onSubmit={handleSubmit} className="loginForm">
-        <label>
-          <input
-            placeholder="Username or Email"
-            type="text"
-            value={credential}
-            onChange={e => setCredential(e.target.value)}
-            required
-          >
-          </input>
-        </label>
-
-        <label>
-          <input
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          >
-          </input>
-        </label>
+        <h1 className="login-header">Log In</h1>
         {errors.message && <p className="err">The provided credentials were invalid.</p>}
 
-        <div className="loginBtn">
-          <button
-            className="clickable"
-            disabled={disabled}
-          >
-            Log In
-          </button>
-        </div>
+        <input
+          placeholder="Username or Email"
+          type="text"
+          value={credential}
+          onChange={(e) => setCredential(e.target.value)}
+          required
+        >
+        </input>
+
+        <input
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        >
+        </input>
+
+        <button
+          className="clickable"
+          disabled={disabled}
+        >
+          Log In
+        </button>
       </form>
 
       <div className="demoLogin">

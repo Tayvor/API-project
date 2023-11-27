@@ -31,10 +31,12 @@ export default function ManageSpots() {
   return (
     <div>
       <h2>Manage Spots</h2>
+
       {!Object.values(currUserSpots).length ?
         <button onClick={() => history.push('/spots/new')}
         >Create a New Spot</button>
-        : ''}
+        : ''
+      }
 
       {isLoaded && currUserSpots && (
         <div className='spots-ctn'>
@@ -44,6 +46,7 @@ export default function ManageSpots() {
               className='userSpot'
             >
               <img
+                title={`${spot.name}`}
                 className='spotImg'
                 onClick={() => history.push(`/spots/${spot.id}`)}
                 src={spot.previewImage || blueHouse}

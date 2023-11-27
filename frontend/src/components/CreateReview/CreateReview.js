@@ -38,38 +38,38 @@ export default function CreateReview({ spotId }) {
         placeholder='Leave your review here...'
       ></textarea>
 
-      <div className="stars">
-        <i
-          className="fas fa-star revStar lit"
-          onClick={() => setStarRating(1)}
-        ></i>
-        <i
-          className={`fas fa-star revStar ${starRating > 1 ? 'lit' : ''}`}
-          onClick={() => setStarRating(2)}
-        ></i>
-        <i
-          className={`fas fa-star revStar ${starRating > 2 ? 'lit' : ''}`}
-          onClick={() => setStarRating(3)}
-        ></i>
-        <i
-          className={`fas fa-star revStar ${starRating > 3 ? 'lit' : ''}`}
-          onClick={() => setStarRating(4)}
-        ></i>
-        <i
-          className={`fas fa-star revStar ${starRating > 4 ? 'lit' : ''}`}
-          onClick={() => setStarRating(5)}
-        ></i>
-        <span>{` Stars`}</span>
+      <div className='starsContainer'>
+        <div className="stars">
+          <i
+            className="fas fa-star revStar lit"
+            onClick={() => setStarRating(1)}
+          ></i>
+          <i
+            className={`fas fa-star revStar ${starRating > 1 ? 'lit' : ''}`}
+            onClick={() => setStarRating(2)}
+          ></i>
+          <i
+            className={`fas fa-star revStar ${starRating > 2 ? 'lit' : ''}`}
+            onClick={() => setStarRating(3)}
+          ></i>
+          <i
+            className={`fas fa-star revStar ${starRating > 3 ? 'lit' : ''}`}
+            onClick={() => setStarRating(4)}
+          ></i>
+          <i
+            className={`fas fa-star revStar ${starRating > 4 ? 'lit' : ''}`}
+            onClick={() => setStarRating(5)}
+          ></i>
+          <span>{` Stars`}</span>
+        </div>
       </div>
 
-      <div>
-        <button
-          className='submitReviewBtn clickable'
-          onClick={submitReview}
-          disabled={reviewText.length >= 10 ? false : true}
-        >Submit Your Review
-        </button>
-      </div>
+      <button
+        className={reviewText.length >= 10 ? 'submitReviewBtn clickable' : 'submitReviewBtn disabled'}
+        onClick={submitReview}
+        disabled={reviewText.length >= 10 ? false : true}
+      >Submit Your Review
+      </button>
     </div>
   )
 }

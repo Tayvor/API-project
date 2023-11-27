@@ -1,3 +1,9 @@
+@media screen and (max-width: 460px) {
+  .header {
+    flex-direction: column;
+  }
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -6,10 +12,12 @@
   align-items: center;
 }
 
-@media screen and (max-width: 460px) {
-  .header {
-    flex-direction: column;
-  }
+.headerLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #fc4758;
+  font-size: 25px;
 }
 
 .header-right {
@@ -44,7 +52,6 @@
 }
 
 .fab {
-  color: black;
   width: fit-content;
-  font-size: 25px;
+  font-size: 35px;
 }

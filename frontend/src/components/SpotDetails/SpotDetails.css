@@ -51,7 +51,7 @@
 }
 
 .spotDetailsReserveBox {
-  border: 2px solid gray;
+  border: 2px solid black;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -67,7 +67,10 @@
 }
 
 .reserveBtn {
-  background-color: red;
+  border: 2px solid black;
+  background-color: #fc4758;
+  color: white;
+  box-shadow: black 2px 2px;
   width: 100%;
   height: 35px;
   margin-top: 10px;

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { csrfFetch } from "../../store/csrf";
 import * as spotActions from '../../store/spots';
 
 import './CreateASpot.css';
-import { csrfFetch } from "../../store/csrf";
 
 export default function CreateASpot() {
   const dispatch = useDispatch();
@@ -112,6 +112,7 @@ export default function CreateASpot() {
           {errors.country ? `Country ${errors.country}` : 'Country'}
           <input
             value={country}
+            placeholder="Country"
             onChange={(e) => setCountry(e.target.value)}
           ></input>
         </label>
@@ -120,6 +121,7 @@ export default function CreateASpot() {
           {errors.streetAddress ? `Street Address ${errors.streetAddress}` : 'Street Address'}
           <input
             value={streetAddress}
+            placeholder="Address"
             onChange={(e) => setStreetAddress(e.target.value)}
           ></input>
         </label>
@@ -128,17 +130,17 @@ export default function CreateASpot() {
           <label className={errors.city ? 'required' : ''}>
             {errors.city ? `City ${errors.city}` : 'City'}
             <input
-              className="cityInput"
               value={city}
+              placeholder="City"
               onChange={(e) => setCity(e.target.value)}
             ></input>
           </label>
 
           <label className={errors.state ? 'required' : ''}>
-            {errors.required ? `State ${errors.state}` : 'State'}
+            {errors.state ? `State ${errors.state}` : 'State'}
             <input
-              className="stateInput"
               value={state}
+              placeholder="State"
               onChange={(e) => setState(e.target.value)}
             ></input>
           </label>
@@ -148,7 +150,6 @@ export default function CreateASpot() {
           <label>
             Latitude
             <input
-              className="latInput"
               value={latitude}
               onChange={(e) => setLatitude(e.target.value)}
             ></input>
@@ -157,7 +158,6 @@ export default function CreateASpot() {
           <label>
             Longitude
             <input
-              className="lngInput"
               value={longitude}
               onChange={(e) => setLongitude(e.target.value)}
             ></input>
@@ -175,7 +175,6 @@ export default function CreateASpot() {
           {errors.description ? `Description ${errors.description}` : ''}
           <textarea
             placeholder="Please write at least 30 characters"
-            className="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
@@ -206,7 +205,7 @@ export default function CreateASpot() {
 
         <label className={errors.price ? 'required' : ''}>
           {errors.price ? `Price ${errors.price}` : ''}
-          <div className="priceDiv">
+          <div>
             $
             <input
               placeholder="Price per night (USD)"
@@ -233,7 +232,6 @@ export default function CreateASpot() {
         <label>
           <input
             placeholder="Preview Image URL"
-            className="imgInput"
             value={imgUrl1}
             onChange={(e) => setImgUrl1(e.target.value)}
           ></input>
@@ -242,7 +240,6 @@ export default function CreateASpot() {
         <label>
           <input
             placeholder="Image URL"
-            className="imgInput"
             value={imgUrl2}
             onChange={(e) => setImgUrl2(e.target.value)}
             disabled={imgUrl1 ? false : true}
@@ -252,7 +249,6 @@ export default function CreateASpot() {
         <label>
           <input
             placeholder="Image URL"
-            className="imgInput"
             value={imgUrl3}
             onChange={(e) => setImgUrl3(e.target.value)}
             disabled={imgUrl2 ? false : true}
@@ -262,7 +258,6 @@ export default function CreateASpot() {
         <label>
           <input
             placeholder="Image URL"
-            className="imgInput"
             value={imgUrl4}
             onChange={(e) => setImgUrl4(e.target.value)}
             disabled={imgUrl3 ? false : true}
@@ -272,7 +267,6 @@ export default function CreateASpot() {
         <label>
           <input
             placeholder="Image URL"
-            className="imgInput"
             value={imgUrl5}
             onChange={(e) => setImgUrl5(e.target.value)}
             disabled={imgUrl4 ? false : true}
@@ -285,7 +279,6 @@ export default function CreateASpot() {
       <div className="createSpotDiv">
         <button
           className="createSpotBtn"
-          // disabled={disable}
           type="submit"
           onClick={validate}
         >Create Spot

@@ -106,7 +106,7 @@ export default function SpotDetails() {
             </div>
 
             <div className="spotDetailsReserveBox">
-              <div className="reserveBoxTop">{theSpot ? `$${theSpot.price} night` : ''}
+              <div className="reserveBoxTop">{theSpot ? `$${theSpot.price.toFixed(2)} night` : ''}
                 <div>
                   <i className="fas fa-star">{starAvg ? ` ${starAvg.toFixed(1)}` : ' New'}</i>
                   {numReviews > 1 ? ` · ${numReviews} reviews` : ''}
