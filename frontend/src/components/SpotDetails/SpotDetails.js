@@ -25,7 +25,6 @@ export default function SpotDetails() {
     dispatch(spotActions.getSpotById(spotId))
       // .catch((err) => {
       //   const data = err.json();
-      //   console.log(data, '<== Data ===');
       //   return
       // })
       .then(() => dispatch(spotActions.getReviewsBySpotId(spotId)))
@@ -80,7 +79,6 @@ export default function SpotDetails() {
 
           <section className="images">
             {theImages && theImages.map((image) => {
-              console.log(image, '<== Image ===');
               if (image.preview) {
                 return <img className='bigImg' src={image.url} style={{ width: '100%' }}></img>
               }

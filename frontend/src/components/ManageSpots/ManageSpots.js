@@ -17,13 +17,12 @@ export default function ManageSpots() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const currUserSpots = useSelector((state) => state.spots.userSpots);
-  // console.log(currUserSpots)
+  console.log(Object.values(currUserSpots)[1], '****')
 
   useEffect(() => {
     dispatch(spotActions.getSpotsByCurrUser())
       .catch(async (data) => {
         // const problem = await data.json()
-        // console.log(data, '<=== Data ===')
         return data;
       })
       .then(() => setIsLoaded(true))
@@ -42,6 +41,7 @@ export default function ManageSpots() {
       {isLoaded && currUserSpots && (
         <div className='spots-ctn'>
           {Object.values(currUserSpots).map((spot) =>
+
             <div
               key={spot.id}
               className='userSpot'
@@ -56,7 +56,7 @@ export default function ManageSpots() {
               <div className="cityStateStar">
                 <div>{`${spot.city}, ${spot.state}`}</div>
                 <i className="fas fa-star">
-                  {spot.avgRating ?
+                  {spot.avgRating && spot.avgRating !== null ?
                     ` ${Number(spot.avgRating).toFixed(1)}` : ' New'}
                 </i>
               </div>

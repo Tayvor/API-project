@@ -75,7 +75,6 @@ export default function CreateASpot() {
     setErrors(errors);
 
     if (Object.keys(errors).length) {
-      // console.log(errors, '<=== errors ===');
       return errors;
     } else {
       handleSubmit();
@@ -111,14 +110,13 @@ export default function CreateASpot() {
       addPreview()
         .catch(async (err) => {
           const data = await err.json();
-          console.log(data)
+          return data;
         })
     }
 
     return dispatch(spotActions.updateASpot(updatedSpotInfo))
       .catch(async (err) => {
         const data = await err.json();
-        console.log(data, '<=== Error ===');
         return data;
       })
       .then((spot) => {

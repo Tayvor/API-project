@@ -49,7 +49,6 @@ export default function CreateASpot() {
     setErrors(errors);
 
     if (Object.keys(errors).length) {
-      // console.log(errors, '<=== errors ===');
       return errors;
     } else {
       handleSubmit();
@@ -71,7 +70,6 @@ export default function CreateASpot() {
 
     return dispatch(spotActions.createASpot(newSpotInfo))
       .catch(async (problem) => {
-        // console.log(problem, '<=== Problem ===');
         return problem;
       })
       .then(async (spot) => {
@@ -93,7 +91,6 @@ export default function CreateASpot() {
       })
       .catch(async (err) => {
         const data = await err.json();
-        // console.log(err)
         return data;
       })
       .then(() => history.push(`/spots/${spotId}`))

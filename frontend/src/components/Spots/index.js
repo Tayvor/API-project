@@ -22,7 +22,6 @@ export default function Spots() {
   }, [dispatch]);
 
   const allSpots = Object.values(useSelector((state) => state.spots.spots));
-  // console.log(allSpots)
 
   return (
     <>

@@ -36,7 +36,6 @@ export default function SignupFormModal() {
           const data = await res.json();
           if (data && data.errors) {
             setErrors(data.errors);
-            console.log(data, '<== Data ===')
           }
         });
     }

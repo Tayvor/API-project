@@ -137,7 +137,6 @@ export const deleteSpot = (spotId) => async (dispatch) => {
     .then(dispatch(deleteSpotById(spotId)))
     .catch(async (err) => {
       const error = await err.json();
-      // console.log(error, '<=== Error ===')
       return error;
     })
   return res;
@@ -148,7 +147,6 @@ export const getReviewsBySpotId = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}/reviews`)
   if (res.ok) {
     const data = await res.json()
-    // console.log(data.Reviews, '<=== Data ===')
     const reviews = await dispatch(getSpotReviews(data.Reviews))
     return reviews;
   }
@@ -162,7 +160,6 @@ export const deleteReviewById = (reviewId) => async (dispatch) => {
     .then(dispatch(deleteReview(reviewId)))
     .catch(async (err) => {
       const error = await err.json();
-      // console.log(error, '<=== Error ===')
       return error;
     })
   return res;
