@@ -57,10 +57,10 @@ export default function ManageSpots() {
                 <div>{`${spot.city}, ${spot.state}`}</div>
                 <i className="fas fa-star">
                   {spot.avgRating ?
-                    ` ${parseInt(spot.avgRating).toFixed(1)}` : ' New'}
+                    ` ${Number(spot.avgRating).toFixed(1)}` : ' New'}
                 </i>
               </div>
-              <span>{`$${parseInt(spot.price).toFixed(2)} night`}</span>
+              <span>{`$${Number(spot.price).toFixed(2)} night`}</span>
 
               <div
                 className='updateDeleteDiv'
