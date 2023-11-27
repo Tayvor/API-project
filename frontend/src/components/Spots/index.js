@@ -22,6 +22,7 @@ export default function Spots() {
   }, [dispatch]);
 
   const allSpots = Object.values(useSelector((state) => state.spots.spots));
+  // console.log(allSpots)
 
   return (
     <>
@@ -33,11 +34,13 @@ export default function Spots() {
               className="spot"
               onClick={(e) => history.push(`/spots/${spot.id}`)}
             >
+
               <img
                 title={`${spot.name}`}
                 src={spot.previewImage || blueHouse}
                 className="spotImg"
               ></img>
+
               <div className="spot-footer">
                 <div>{`${spot.city}, ${spot.state}`}</div>
                 <i className="fas fa-star">
@@ -45,7 +48,7 @@ export default function Spots() {
                     ` ${spot.avgRating.toFixed(1)}` : ' New'}
                 </i>
               </div>
-              <span>{`$${spot.price} night`}</span>
+              <span>{`$${spot.price.toFixed(2)} night`}</span>
             </div>
           )}
         </div>

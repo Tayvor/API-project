@@ -46,6 +46,10 @@
   grid-template-columns: 600px 1fr;
 }
 
+.hostedBy {
+  margin: 0;
+}
+
 .spotDesc {
   word-wrap: break-word;
 }

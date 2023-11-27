@@ -5,11 +5,18 @@
 }
 
 .loginForm>button {
+  height: 40px;
+}
+
+.loginFormBtn {
   border: 2px solid black;
   background-color: #fc4758;
   color: white;
-  height: 40px;
   box-shadow: black 2px 2px;
+}
+
+.loginFormBtn:hover {
+  cursor: pointer;
 }
 
 .loginForm>input {
@@ -26,6 +33,7 @@
   margin-bottom: 10px;
 }
 
+/* Demo Login */
 .demoLogin {
   display: flex;
   justify-content: center;

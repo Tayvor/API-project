@@ -17,6 +17,7 @@ export default function ManageSpots() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const currUserSpots = useSelector((state) => state.spots.userSpots);
+  // console.log(currUserSpots)
 
   useEffect(() => {
     dispatch(spotActions.getSpotsByCurrUser())
@@ -59,7 +60,7 @@ export default function ManageSpots() {
                     ` ${parseInt(spot.avgRating).toFixed(1)}` : ' New'}
                 </i>
               </div>
-              <span>{`$${parseInt(spot.price)} night`}</span>
+              <span>{`$${parseInt(spot.price).toFixed(2)} night`}</span>
 
               <div
                 className='updateDeleteDiv'

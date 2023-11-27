@@ -9,7 +9,7 @@ export default function CreateReview({ spotId }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [reviewText, setReviewText] = useState('');
-  const [starRating, setStarRating] = useState(1);
+  const [starRating, setStarRating] = useState(0);
 
   const submitReview = async () => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
@@ -41,7 +41,7 @@ export default function CreateReview({ spotId }) {
       <div className='starsContainer'>
         <div className="stars">
           <i
-            className="fas fa-star revStar lit"
+            className={`fas fa-star revStar ${starRating > 0 ? 'lit' : ''}`}
             onClick={() => setStarRating(1)}
           ></i>
           <i
@@ -65,9 +65,9 @@ export default function CreateReview({ spotId }) {
       </div>
 
       <button
-        className={reviewText.length >= 10 ? 'submitReviewBtn clickable' : 'submitReviewBtn disabled'}
+        className={reviewText.length >= 10 && starRating ? 'submitReviewBtn clickable' : 'submitReviewBtn disabled'}
         onClick={submitReview}
-        disabled={reviewText.length >= 10 ? false : true}
+        disabled={reviewText.length >= 10 && starRating ? false : true}
       >Submit Your Review
       </button>
     </div>

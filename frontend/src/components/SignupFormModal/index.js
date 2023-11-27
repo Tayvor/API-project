@@ -19,6 +19,7 @@ export default function SignupFormModal() {
 
   const handleSignup = (e) => {
     e.preventDefault();
+
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
@@ -35,6 +36,7 @@ export default function SignupFormModal() {
           const data = await res.json();
           if (data && data.errors) {
             setErrors(data.errors);
+            console.log(data, '<== Data ===')
           }
         });
     }
@@ -128,6 +130,7 @@ export default function SignupFormModal() {
         {errors.confirmPassword && <p className="err">{errors.confirmPassword}</p>}
 
         <button
+          className={disabled ? 'disabled' : 'signupFormBtn'}
           disabled={disabled}
           type="submit"
         >Sign Up!</button>

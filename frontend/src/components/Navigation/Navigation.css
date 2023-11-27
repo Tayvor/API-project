@@ -1,13 +1,7 @@
-@media screen and (max-width: 460px) {
-  .header {
-    flex-direction: column;
-  }
-}
-
 .header {
   display: flex;
   justify-content: space-between;
-  min-width: 265px;
+  min-width: 360px;
   padding: 10px;
   align-items: center;
 }

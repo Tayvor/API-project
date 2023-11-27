@@ -80,6 +80,7 @@ export default function SpotDetails() {
 
           <section className="images">
             {theImages && theImages.map((image) => {
+              console.log(image, '<== Image ===');
               if (image.preview) {
                 return <img className='bigImg' src={image.url} style={{ width: '100%' }}></img>
               }
@@ -99,7 +100,7 @@ export default function SpotDetails() {
 
           <section className="spotDetailsFooter">
             <div>
-              <h3>{theSpot ?
+              <h3 className="hostedBy">{theSpot ?
                 `Hosted by ${theSpot.Owner.firstName} ${theSpot.Owner.lastName}` : ''
               }</h3>
               <div className="spotDesc">{theSpot ? `${theSpot.description}` : ''}</div>

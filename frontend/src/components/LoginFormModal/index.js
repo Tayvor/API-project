@@ -86,7 +86,7 @@ export default function LoginFormModal() {
         </input>
 
         <button
-          className="clickable"
+          className={credential.length > 3 && password.length > 5 ? 'loginFormBtn' : 'disabled'}
           disabled={disabled}
         >
           Log In
@@ -96,7 +96,7 @@ export default function LoginFormModal() {
       <div className="demoLogin">
         <div
           onClick={demoLogin}
-        >Demo User</div>
+        >Log in as Demo User</div>
       </div>
     </>
   )
